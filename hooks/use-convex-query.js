@@ -2,6 +2,13 @@ import { useQuery, useMutation } from "convex/react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
+// 发请求、缓存数据、监听变化、自动更新UI
+// 等价传统写法：
+// useEffect(()=>{
+//  fetch("/api/user")
+// },[])
+// 相较传统写法，convex 版本可以：
+// 自动缓存、自动同步、实时更新（数据库变UI也变）
 export const useConvexQuery = (query, ...args) => {
   const result = useQuery(query, ...args);
   const [data, setData] = useState(undefined);
