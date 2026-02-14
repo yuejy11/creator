@@ -9,7 +9,10 @@ import { toast } from "sonner";
 // },[])
 // 相较传统写法，convex 版本可以：
 // 自动缓存、自动同步、实时更新（数据库变UI也变）
+// 第一个参数 = query函数引用，后面的参数 = query需要的参数 ...args
 export const useConvexQuery = (query, ...args) => {
+  // 真正请求服务器、订阅数据库
+  // 数据库变化 => 自动推送数据 => 组件重新渲染
   const result = useQuery(query, ...args);
   const [data, setData] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,6 +52,7 @@ export const useConvexMutation = (mutation) => {
     setError(null);
 
     try {
+      // 真正请求服务器
       const response = await mutationFn(...args);
       setData(response);
       return response;

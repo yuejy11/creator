@@ -3,7 +3,6 @@
 // mutation	改数据，query 查数据
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { internal } from "./_generated/api";
 
 // 自动创建用户
 export const store = mutation({
@@ -40,6 +39,7 @@ export const store = mutation({
 
 // 查询当前用户
 export const getCurrentUser = query({
+  args: {},
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity()
     if (!identity) {
