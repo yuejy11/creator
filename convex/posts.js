@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
-// Get user's draft (there should only be one)
+// 获取用户的草稿(应该只有一个)
 export const getUserDraft = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -9,7 +9,9 @@ export const getUserDraft = query({
       return null;
     }
 
-    // Get user from database
+    // .filter() 里要写 q.field("name")，而 .withIndex() 直接写 "name"。
+    // 在 withIndex 中,因为你已经通过 "by_token" 指定了索引，Convex 已经知道这个索引涉及哪些字段了，所以你直接传字符串作为列名即可
+    // 在 filter 中,这是一种通用的表达式引擎，它需要 q.field() 来明确区分这是一个数据库字段还是这是一个普通的字符串常量
     const user = await ctx.db
       .query("users")
       .filter((q) => q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier))
@@ -33,7 +35,7 @@ export const getUserDraft = query({
   },
 });
 
-// Create a new post
+// 创建一个新的帖子
 export const create = mutation({
   args: {
     title: v.string(),
@@ -50,7 +52,6 @@ export const create = mutation({
       throw new Error("Not authenticated");
     }
 
-    // Get user from database
     const user = await ctx.db
       .query("users")
       .filter((q) => q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier))
@@ -60,7 +61,6 @@ export const create = mutation({
       throw new Error("User not found");
     }
 
-    // Check for existing draft
     const existingDraft = await ctx.db
       .query("posts")
       .filter((q) =>
@@ -73,8 +73,9 @@ export const create = mutation({
 
     const now = Date.now();
 
-    // If publishing and we have an existing draft, update it to published
+    // 如果准备要发布并且我们有草稿，将帖子状态更新为已发布
     if (args.status === "published" && existingDraft) {
+      // patch：只修改提供的字段，其它的保持原封不动
       await ctx.db.patch(existingDraft._id, {
         title: args.title,
         content: args.content,
@@ -89,7 +90,7 @@ export const create = mutation({
       return existingDraft._id;
     }
 
-    // If creating a draft and we have an existing draft, update it
+    // 如果准备创建草稿并且我们已经有草稿，更新原来的草稿
     if (args.status === "draft" && existingDraft) {
       await ctx.db.patch(existingDraft._id, {
         title: args.title,
@@ -103,7 +104,7 @@ export const create = mutation({
       return existingDraft._id;
     }
 
-    // Create new post (either first draft or direct publish)
+    // 创建新的帖子
     const postId = await ctx.db.insert("posts", {
       title: args.title,
       content: args.content,
@@ -124,7 +125,7 @@ export const create = mutation({
   },
 });
 
-// Update an existing post
+// 更新现有帖子
 export const update = mutation({
   args: {
     id: v.id("posts"),
@@ -142,7 +143,6 @@ export const update = mutation({
       throw new Error("Not authenticated");
     }
 
-    // Get user from database
     const user = await ctx.db
       .query("users")
       .filter((q) => q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier))
@@ -152,13 +152,14 @@ export const update = mutation({
       throw new Error("User not found");
     }
 
-    // Get the post
+    // 从数据库拿到准备更新的帖子
+    // 在 Convex 中，每一个文档中的 _id 内部包含了数据所在的表，数据的唯一标识符
     const post = await ctx.db.get(args.id);
     if (!post) {
       throw new Error("Post not found");
     }
 
-    // Check if user owns the post
+    // 检查是不是作者自己的帖子
     if (post.authorId !== user._id) {
       throw new Error("Not authorized to update this post");
     }
@@ -168,7 +169,7 @@ export const update = mutation({
       updatedAt: now,
     };
 
-    // Add provided fields to update
+    // 将提供的字段进行更新
     if (args.title !== undefined) updateData.title = args.title;
     if (args.content !== undefined) updateData.content = args.content;
     if (args.tags !== undefined) updateData.tags = args.tags;
@@ -177,12 +178,9 @@ export const update = mutation({
       updateData.featuredImage = args.featuredImage;
     if (args.scheduledFor !== undefined)
       updateData.scheduledFor = args.scheduledFor;
-
-    // Handle status change
     if (args.status !== undefined) {
       updateData.status = args.status;
-
-      // If publishing for the first time
+      // 如果是第一次出版
       if (args.status === "published" && post.status === "draft") {
         updateData.publishedAt = now;
       }

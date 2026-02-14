@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function CreatePostPage() {
-  // Get existing draft
   const { data: existingDraft, isLoading: isDraftLoading } = useConvexQuery(
     api.posts.getUserDraft
   );

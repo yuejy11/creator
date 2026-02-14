@@ -10,8 +10,8 @@ import { api } from "@/convex/_generated/api";
 import { useConvexMutation } from "@/hooks/use-convex-query";
 import PostEditorHeader from "./post-editor-header";
 import PostEditorContent from "./post-editor-content";
-// import PostEditorSettings from "./post-editor-settings";
-// import ImageUploadModal from "./image-upload-modal";
+import PostEditorSettings from "./post-editor-settings";
+import ImageUploadModal from "./image-upload-modal";
 
 const postSchema = z.object({
   title: z.string().min(1, "Title is required").max(200, "Title too long"),
@@ -174,14 +174,14 @@ export default function PostEditor({
         }}
       />
 
-      {/* <PostEditorSettings
+      <PostEditorSettings
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         form={form}
         mode={mode}
-      /> */}
+      />
 
-      {/* <ImageUploadModal
+      <ImageUploadModal
         isOpen={isImageModalOpen}
         onClose={() => setIsImageModalOpen(false)}
         onImageSelect={handleImageSelect}
@@ -190,7 +190,7 @@ export default function PostEditor({
             ? "Upload Featured Image"
             : "Insert Image"
         }
-      /> */}
+      />
     </div>
   );
 }
