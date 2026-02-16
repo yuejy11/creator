@@ -95,7 +95,7 @@ export default function ImageUploadModal({
   const [isTransforming, setIsTransforming] = useState(false);
   const [activeTab, setActiveTab] = useState("upload");
 
-  console.log("在这里：", transformedImage)
+  // console.log("在这里：", transformedImage)
 
   const form = useForm({
     resolver: zodResolver(transformationSchema),

@@ -69,6 +69,7 @@ export default function PostEditorHeader({
             <Settings className="h-4 w-4" />
           </Button>
 
+          {/* 创建帖子显示保存按钮 isEdit = false */}
           {!isEdit && (
             <Button
               onClick={onSave}

@@ -40,9 +40,11 @@ export default function PostEditor({
     api.posts.update
   );
 
-  // Form setup
+  // 表单设置
   const form = useForm({
+    // 设置校验规则
     resolver: zodResolver(postSchema),
+    // 设置默认值
     defaultValues: {
       title: initialData?.title || "",
       content: initialData?.content || "",
@@ -56,19 +58,32 @@ export default function PostEditor({
   });
 
   const { handleSubmit, watch, setValue } = form;
+  // watchedValues就是表单的一个实时镜像
+  // 表单中每一个字段在输入框内发生变化，这个实时镜像的值就会更新
   const watchedValues = watch();
 
-  // Auto-save for drafts
+  // // 自动保存草稿(轮询自动保存)
+  // useEffect(() => {
+  //   if (!watchedValues.title && !watchedValues.content) return;
+
+  //   const autoSave = setInterval(() => {
+  //     if (watchedValues.title || watchedValues.content) {
+  //       if (mode === "create") handleSave(true); // Silent save
+  //     }
+  //   }, 30000);
+  //   下一次effect重新执行或组件卸载时清理
+  //   return () => clearInterval(autoSave);
+  // }, [watchedValues.title, watchedValues.content]);
+
+  // 自动保存草稿(输入停止后防抖保存)
   useEffect(() => {
     if (!watchedValues.title && !watchedValues.content) return;
 
-    const autoSave = setInterval(() => {
-      if (watchedValues.title || watchedValues.content) {
-        if (mode === "create") handleSave(true); // Silent save
-      }
-    }, 30000);
-
-    return () => clearInterval(autoSave);
+    const timer = setTimeout(() => {
+      handleSave(true); // 静默保存草稿
+    }, 2500); // 2.5s：用户停止输入2.5秒后保存
+  // 下一次effect重新执行或组件卸载时清理
+    return () => clearTimeout(timer);
   }, [watchedValues.title, watchedValues.content]);
 
   // Handle image selection
@@ -88,7 +103,7 @@ export default function PostEditor({
     setIsImageModalOpen(false);
   };
 
-  // Submit handler
+  // 提交表单
   const onSubmit = async (data, action, silent = false) => {
     try {
       const postData = {
@@ -105,20 +120,22 @@ export default function PostEditor({
 
       let resultId;
 
+      // 编辑模式：mode === "edit"且有草稿id，调用 updatePost，修改现有文章
       if (mode === "edit" && initialData?._id) {
-        // Always use update for edit mode
         resultId = await updatePost({
           id: initialData._id,
           ...postData,
         });
-      } else if (initialData?._id && action === "draft") {
-        // If we have existing draft data, update it
+      } 
+      // 草稿续写：虽非编辑模式，但已有草稿id，同样调用 updatePost，防止重复创建
+      else if (initialData?._id && action === "draft") {
         resultId = await updatePost({
           id: initialData._id,
           ...postData,
         });
-      } else {
-        // Create new post (will auto-update existing draft if needed)
+      } 
+      // 全新发布：以上皆不满足调用 createPost 新建一篇文章
+      else {
         resultId = await createPost(postData);
       }
 
@@ -137,8 +154,23 @@ export default function PostEditor({
   };
 
   const handleSave = (silent = false) => {
+    if (silent && typeof silent.preventDefault === 'function') silent = false;
     handleSubmit((data) => onSubmit(data, "draft", silent))();
   };
+
+  // // 测试
+  // const handleSave = (silent = false) => {
+  //   // silent = SyntheticBaseEvent{}
+  //   // React 的事件对象有 preventDefault
+  //   // if (silent && typeof silent.preventDefault === 'function') silent = false;
+  //   console.log('handleSave被调用, silent=', silent);
+  //   handleSubmit(
+  //     (data) => onSubmit(data, "draft", silent),
+  //     (errors) => {
+  //       console.log('验证失败:', errors);
+  //     }
+  //   )();
+  // };
 
   const handlePublish = () => {
     handleSubmit((data) => onSubmit(data, "publish"))();
