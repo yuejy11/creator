@@ -116,18 +116,18 @@ export default function ImageUploadModal({
   const { watch, setValue, reset } = form;
   const watchedValues = watch();
 
-  // Handle file upload
+  // 处理图片上传逻辑
   const onDrop = useCallback(async (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (!file) return;
 
-    // Validate file type
+    // 验证文件类型
     if (!file.type.startsWith("image/")) {
       toast.error("Please select an image file");
       return;
     }
 
-    // Validate file size (10MB max)
+    // 验证文件大小(最大10MB)
     if (file.size > 10 * 1024 * 1024) {
       toast.error("File size must be less than 10MB");
       return;
@@ -154,7 +154,7 @@ export default function ImageUploadModal({
       setIsUploading(false);
     }
   }, []);
-
+  // 文件拖拽
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
@@ -163,8 +163,9 @@ export default function ImageUploadModal({
     multiple: false,
   });
 
-  // Apply transformations
+  // 使用更改逻辑
   const applyTransformations = async () => {
+    // 判断原始上传图片是否存在
     if (!uploadedImage) return;
 
     setIsTransforming(true);
@@ -172,7 +173,7 @@ export default function ImageUploadModal({
     try {
       let transformationChain = [];
 
-      // Aspect ratio and resizing
+      // 纵横比和大小
       if (watchedValues.aspectRatio !== "original") {
         const ratio = ASPECT_RATIOS.find(
           (r) => r.value === watchedValues.aspectRatio
@@ -192,17 +193,17 @@ export default function ImageUploadModal({
         }
       }
 
-      // Background removal
+      // 移除背景
       if (watchedValues.backgroundRemoved) {
         transformationChain.push({ effect: "removedotbg" });
       }
 
-      // Drop shadow (only works with transparent background)
+      // 添加阴影
       if (watchedValues.dropShadow && watchedValues.backgroundRemoved) {
         transformationChain.push({ effect: "dropshadow" });
       }
 
-      // Text overlay
+      // 文本覆盖
       if (watchedValues.textOverlay?.trim()) {
         transformationChain.push({
           overlayText: watchedValues.textOverlay,
@@ -213,7 +214,7 @@ export default function ImageUploadModal({
         });
       }
 
-      // Apply transformations
+      // 使用更改
       const transformedUrl = buildTransformationUrl(
         uploadedImage.url,
         transformationChain
@@ -232,13 +233,13 @@ export default function ImageUploadModal({
     }
   };
 
-  // Reset transformations
+  // 重置图片规格
   const resetTransformations = () => {
     reset();
     setTransformedImage(uploadedImage?.url);
   };
 
-  // Handle image selection
+  // 处理上传的图片
   const handleSelectImage = () => {
     if (transformedImage) {
       onImageSelect({
@@ -297,6 +298,7 @@ export default function ImageUploadModal({
             >
               <input {...getInputProps()} />
 
+              {/* 加载UI优化 */}
               {isUploading ? (
                 <div className="space-y-4">
                   <Loader2 className="h-12 w-12 mx-auto animate-spin text-purple-400" />
@@ -319,6 +321,7 @@ export default function ImageUploadModal({
               )}
             </div>
 
+            {/* 上传成功后 Upload 页面提示 */}
             {uploadedImage && (
               <div className="text-center space-y-4">
                 <Badge
@@ -345,15 +348,16 @@ export default function ImageUploadModal({
 
           <TabsContent value="transform" className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-6 max-h-[60vh] overflow-y-auto">
-              {/* Transformation Controls */}
+              {/* 转换控制 */}
               <div className="space-y-6">
+                {/* AI工具 */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-white flex items-center">
                     <Wand2 className="h-5 w-5 mr-2" />
                     AI Transformations
                   </h3>
 
-                  {/* Background Removal */}
+                  {/* 去除背景 */}
                   <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700">
                     <div className="flex items-center justify-between mb-2">
                       <Label className="text-white font-medium">
@@ -386,7 +390,7 @@ export default function ImageUploadModal({
                     </p>
                   </div>
 
-                  {/* Drop Shadow */}
+                  {/* 添加阴影 */}
                   <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700">
                     <div className="flex items-center justify-between mb-2">
                       <Label className="text-white font-medium">
@@ -418,7 +422,7 @@ export default function ImageUploadModal({
                   </div>
                 </div>
 
-                {/* Aspect Ratio & Cropping */}
+                {/* 长宽比和裁剪 */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-white flex items-center">
                     <Crop className="h-5 w-5 mr-2" />
@@ -503,7 +507,7 @@ export default function ImageUploadModal({
                   )}
                 </div>
 
-                {/* Text Overlay */}
+                {/* 文本覆盖 */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-white flex items-center">
                     <Type className="h-5 w-5 mr-2" />
@@ -577,7 +581,7 @@ export default function ImageUploadModal({
                   )}
                 </div>
 
-                {/* Action Buttons */}
+                {/* 操作按钮 */}
                 <div className="flex gap-3">
                   <Button
                     onClick={applyTransformations}
@@ -599,7 +603,7 @@ export default function ImageUploadModal({
                 </div>
               </div>
 
-              {/* Image Preview */}
+              {/* 图像预览 */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-white flex items-center">
                   <ImageIcon className="h-5 w-5 mr-2" />

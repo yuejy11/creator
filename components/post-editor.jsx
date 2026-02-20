@@ -86,17 +86,26 @@ export default function PostEditor({
     return () => clearTimeout(timer);
   }, [watchedValues.title, watchedValues.content]);
 
-  // Handle image selection
+  // 处理上传的图片
   const handleImageSelect = (imageData) => {
+    // 用于文章封面
     if (imageModalType === "featured") {
       setValue("featuredImage", imageData.url);
       toast.success("Featured image added!");
-    } else if (imageModalType === "content" && quillRef) {
+    } 
+    // 用于正文内容
+    else if (imageModalType === "content" && quillRef) {
+      // 获取 Quill 实例
       const quill = quillRef.getEditor();
+      // 获取当前光标位置
       const range = quill.getSelection();
+      // 决定插入位置
       const index = range ? range.index : quill.getLength();
 
+      // 在 index 位置插入 <img src="imageData.url">
       quill.insertEmbed(index, "image", imageData.url);
+      // 移动光标
+      // 插入图片后，把光标移动到图片后面
       quill.setSelection(index + 1);
       toast.success("Image inserted!");
     }

@@ -104,11 +104,11 @@ export async function improveContent(
           - Include practical examples and insights
           - Maintain the original tone and style
           - Return the improved content in the same HTML format
-          `;
-                  break;
+        `;
+      break;
 
-                case "simplify":
-                  prompt = `
+      case "simplify":
+        prompt = `
           Take this blog content and make it more concise and easier to read:
 
           ${currentContent}
@@ -120,7 +120,7 @@ export async function improveContent(
           - Maintain the HTML formatting
           - Keep the essential information
         `;
-        break;
+      break;
 
       default:
         prompt = `

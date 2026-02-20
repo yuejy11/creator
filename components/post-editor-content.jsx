@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { ImageIcon, Sparkles, Wand2, Plus, Minus } from "lucide-react";
 import { toast } from "sonner";
 import dynamic from "next/dynamic";
-// import { generateBlogContent, improveContent } from "@/app/actions/gemini";
 import { generateBlogContent, improveContent } from "@/app/actions/deepseek";
 import { BarLoader } from "react-spinners";
 
@@ -17,8 +16,10 @@ if (typeof window !== "undefined") {
 }
 
 const quillConfig = {
+  // 控制工具栏和插件
   modules: {
     toolbar: {
+      // 按钮布局
       container: [
         [{ header: [1, 2, 3, false] }],
         [{ size: ["small", false, "large", "huge"] }],
@@ -34,9 +35,11 @@ const quillConfig = {
         ],
         ["image", "video"],
       ],
+      // 自定义按钮行为
       handlers: { image: function () {} },
     },
   },
+  // 编辑器输出HTML时，哪些格式允许保留
   formats: [
     "header",
     "size",
@@ -72,6 +75,7 @@ export default function PostEditorContent({
   const [isGenerating, setIsGenerating] = useState(false);
   const [isImproving, setIsImproving] = useState(false);
 
+  // 动态生成 modules 配置
   const getQuillModules = () => ({
     ...quillConfig.modules,
     toolbar: {
@@ -83,18 +87,21 @@ export default function PostEditorContent({
   const handleAI = async (type, improvementType = null) => {
     const { title, content, category, tags } = watchedValues;
 
+    // generate
     if (type === "generate") {
       if (!title?.trim())
         return toast.error("Please add a title before generating content");
       if (
         content &&
-        content !== "<p><br></p>" &&
+        content !== "<p></p>" &&
         !window.confirm("This will replace your existing content. Continue?")
       )
         return;
       setIsGenerating(true);
-    } else {
-      if (!content || content === "<p><br></p>")
+    }
+    // improve 
+    else {
+      if (!content || content === "<p></p>")
         return toast.error("Please add some content before improving it");
       setIsImproving(true);
     }
@@ -121,10 +128,14 @@ export default function PostEditorContent({
   };
 
   const hasTitle = watchedValues.title?.trim();
+  // 富文本编辑器在清空内容后，可能会留下不同的残留标签
+  // 所以这种处理方式适应的情况太少
   // const hasContent =
   //   watchedValues.content && watchedValues.content !== "<p><br></p>";
   const isEditorEmpty = (html) => {
+    // console.log("富文本内容：", html)
     if (!html) return true;
+    // 剔除所有html标签同时去掉空格
     const text = html.replace(/<(.|\n)*?>/g, "").trim();
     return text.length === 0;
   };
@@ -134,7 +145,7 @@ export default function PostEditorContent({
     <>
       <main className="max-w-4xl mx-auto px-6 py-8">
         <div className="space-y-5">
-          {/* Featured Image */}
+          {/* 上传图片区域 */}
           {watchedValues.featuredImage ? (
             <div className="relative group">
               <img
@@ -176,7 +187,7 @@ export default function PostEditorContent({
             </button>
           )}
 
-          {/* Title */}
+          {/* 标题输入区域 */}
           <div>
             <Input
               {...register("title")}
@@ -184,12 +195,18 @@ export default function PostEditorContent({
               className="border-0 text-4xl font-bold bg-transparent placeholder:text-slate-500 text-white p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0"
               style={{ fontSize: "2.5rem", lineHeight: "1.2" }}
             />
+            {/* <Input {...register("title")} /> */}
+            {/* 相当于 */}
+            {/* <Input
+              value={state.title}
+              onChange={(e)=>setState(e.target.value)}
+            /> */}
             {errors.title && (
               <p className="text-red-400 mt-2">{errors.title.message}</p>
             )}
           </div>
 
-          {/* AI Tools */}
+          {/* AI工具 */}
           <div>
             {!hasContent ? (
               <Button
@@ -230,18 +247,21 @@ export default function PostEditorContent({
             )}
           </div>
 
+          {/* 加载UI优化 */}
           {(isGenerating || isImproving) && (
             <BarLoader width={"95%"} color="#D8B4FE" />
           )}
 
-          {/* Editor */}
+          {/* 文档编辑区域 */}
           <div className="prose prose-lg max-w-none">
             <ReactQuill
               ref={setQuillRef}
               theme="snow"
               value={watchedValues.content}
               onChange={(content) => setValue("content", content)}
+              // 工具栏
               modules={getQuillModules()}
+              // 允许输出格式
               formats={quillConfig.formats}
               placeholder="Tell your story... or use AI to generate content!"
               style={{
@@ -257,6 +277,7 @@ export default function PostEditorContent({
         </div>
       </main>
 
+      {/* 覆盖第三方组件默认样式 */}
       <style jsx global>{`
         .ql-editor {
           color: white !important;
