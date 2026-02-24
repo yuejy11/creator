@@ -41,22 +41,22 @@ export const store = mutation({
 export const getCurrentUser = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity()
+    const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("未登录，无法查询！")
+      throw new Error("未登录，无法查询！");
     }
     const user = await ctx.db
       .query("users")
-      .withIndex("by_token", (q) => 
-        q.eq("tokenIdentifier", identity.tokenIdentifier)
+      .withIndex("by_token", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier),
       )
-      .unique()
+      .unique();
     if (!user) {
-      throw new Error("没有找到该用户！")
+      throw new Error("没有找到该用户！");
     }
-    return user
-  }
-})
+    return user;
+  },
+});
 
 // 更新用户名
 export const updateUsername = mutation({
@@ -77,7 +77,7 @@ export const updateUsername = mutation({
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier)
+        q.eq("tokenIdentifier", identity.tokenIdentifier),
       )
       .unique();
     // const user = await ctx.runQuery(internal.users.getCurrentUser)
@@ -89,7 +89,7 @@ export const updateUsername = mutation({
     const usernameRegex = /^[a-zA-Z0-9_-]+$/;
     if (!usernameRegex.test(args.username)) {
       throw new Error(
-        "Username can only contain letters, numbers, underscores, and hyphens"
+        "Username can only contain letters, numbers, underscores, and hyphens",
       );
     }
 
@@ -114,5 +114,33 @@ export const updateUsername = mutation({
     });
 
     return user._id;
+  },
+});
+
+// 通过用户名获取用户（公共个人资料展示）
+export const getByUsername = query({
+  args: { username: v.string() },
+  handler: async (ctx, args) => {
+    if (!args.username) {
+      return null;
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("username"), args.username))
+      .unique();
+
+    if (!user) {
+      return null;
+    }
+
+    // Return only public fields
+    return {
+      _id: user._id,
+      name: user.name,
+      username: user.username,
+      imageUrl: user.imageUrl,
+      createdAt: user.createdAt,
+    };
   },
 });
