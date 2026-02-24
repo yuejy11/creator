@@ -14,7 +14,7 @@ export async function POST(request) {
     // Verify authentication
     const { userId } = await auth();
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "未授权" }, { status: 401 });
     }
 
     // Get form data
@@ -23,7 +23,7 @@ export async function POST(request) {
     const fileName = formData.get("fileName");
 
     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+      return NextResponse.json({ error: "未选择文件" }, { status: 400 });
     }
 
     // Convert file to buffer
@@ -54,11 +54,11 @@ export async function POST(request) {
       name: uploadResponse.name,
     });
   } catch (error) {
-    console.error("ImageKit upload error:", error);
+    console.error("ImageKit 上传失败:", error);
     return NextResponse.json(
       {
         success: false,
-        error: "Failed to upload image",
+        error: "图片上传失败",
         details: error.message,
       },
       { status: 500 }

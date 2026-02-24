@@ -53,7 +53,7 @@ export default function ProfilePage({ params }) {
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-slate-400">Loading profile...</p>
+          <p className="text-slate-400">加载中...</p>
         </div>
       </div>
     );
@@ -69,21 +69,21 @@ export default function ProfilePage({ params }) {
 
   const handleFollowToggle = async () => {
     if (!currentUser) {
-      toast.error("Please sign in to follow users");
+      toast.error("请先登录才能关注");
       return;
     }
 
     try {
       await toggleFollow.mutate({ followingId: user._id });
     } catch (error) {
-      toast.error(error.message || "Failed to update follow status");
+      toast.error(error.message || "操作失败");
     }
   };
 
   return (
     <div className="min-h-screen bg-slate-900 text-white">
       {/* Header */}
-      <PublicHeader link="/" title="Back to Home" />
+      <PublicHeader link="/" title="返回首页" />
 
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Profile Header */}
@@ -121,12 +121,12 @@ export default function ProfilePage({ params }) {
               {isFollowing ? (
                 <>
                   <UserCheck className="h-4 w-4 mr-2" />
-                  Following
+                  已关注
                 </>
               ) : (
                 <>
                   <UserPlus className="h-4 w-4 mr-2" />
-                  Follow
+                  关注
                 </>
               )}
             </Button>
@@ -134,8 +134,8 @@ export default function ProfilePage({ params }) {
 
           <div className="flex items-center justify-center text-sm text-slate-500">
             <Calendar className="h-4 w-4 mr-2" />
-            Joined{" "}
-            {new Date(user.createdAt).toLocaleDateString("en-US", {
+            加入于{" "}
+            {new Date(user.createdAt).toLocaleDateString("zh-CN", {
               month: "long",
               year: "numeric",
             })}
@@ -146,13 +146,13 @@ export default function ProfilePage({ params }) {
         <div className="flex justify-center gap-8 mb-12">
           <div className="text-center">
             <div className="text-2xl font-bold text-white">{posts.length}</div>
-            <div className="text-sm text-slate-400">Posts</div>
+            <div className="text-sm text-slate-400">文章</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-white">
               {followerCount || 0}
             </div>
-            <div className="text-sm text-slate-400">Followers</div>
+            <div className="text-sm text-slate-400">粉丝</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-white">
@@ -160,7 +160,7 @@ export default function ProfilePage({ params }) {
                 .reduce((acc, post) => acc + post.viewCount, 0)
                 .toLocaleString()}
             </div>
-            <div className="text-sm text-slate-400">Total Views</div>
+            <div className="text-sm text-slate-400">总阅读</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-white">
@@ -168,20 +168,20 @@ export default function ProfilePage({ params }) {
                 .reduce((acc, post) => acc + post.likeCount, 0)
                 .toLocaleString()}
             </div>
-            <div className="text-sm text-slate-400">Total Likes</div>
+            <div className="text-sm text-slate-400">总点赞</div>
           </div>
         </div>
 
         {/* Posts */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-white">Recent Posts</h2>
+          <h2 className="text-2xl font-bold text-white">最近文章</h2>
 
           {posts.length === 0 ? (
             <Card className="card-glass">
               <CardContent className="text-center py-12">
-                <p className="text-slate-400 text-lg">No posts yet</p>
+                <p className="text-slate-400 text-lg">还没有文章</p>
                 <p className="text-slate-500 text-sm mt-2">
-                  Check back later for new content!
+                  稍后再来看看有没有新内容吧
                 </p>
               </CardContent>
             </Card>

@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import {
   Eye,
   Heart,
@@ -42,19 +43,19 @@ const PostCard = ({
         return {
           variant: "secondary",
           className: "bg-blue-500/20 text-blue-300 border-blue-500/30",
-          label: "Scheduled",
+          label: "定时",
         };
       }
       return {
         variant: "default",
         className: "bg-green-500/20 text-green-300 border-green-500/30",
-        label: "Published",
+        label: "已发布",
       };
     }
     return {
       variant: "outline",
       className: "bg-orange-500/20 text-orange-300 border-orange-500/30",
-      label: "Draft",
+      label: "草稿",
     };
   };
 
@@ -134,21 +135,21 @@ const PostCard = ({
                   {onEdit && (
                     <DropdownMenuItem onClick={() => onEdit(post)}>
                       <Edit className="h-4 w-4 mr-2" />
-                      Edit Post
+                      编辑文章
                     </DropdownMenuItem>
                   )}
                   {publicUrl && (
                     <DropdownMenuItem asChild>
                       <Link href={publicUrl} target="_blank">
                         <ExternalLink className="h-4 w-4 mr-2" />
-                        View Public
+                        查看公开页
                       </Link>
                     </DropdownMenuItem>
                   )}
                   {onDuplicate && (
                     <DropdownMenuItem onClick={() => onDuplicate(post)}>
                       <Copy className="h-4 w-4 mr-2" />
-                      Duplicate
+                      复制
                     </DropdownMenuItem>
                   )}
                   {onDelete && (
@@ -159,7 +160,7 @@ const PostCard = ({
                         className="text-red-400 focus:text-red-400"
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
-                        Delete Post
+                        删除文章
                       </DropdownMenuItem>
                     </>
                   )}
@@ -216,7 +217,7 @@ const PostCard = ({
                   variant="secondary"
                   className="bg-slate-500/20 text-slate-300 border-slate-500/30 text-xs"
                 >
-                  +{post.tags.length - 3} more
+                  还有 {post.tags.length - 3} 个
                 </Badge>
               )}
             </div>
@@ -241,9 +242,11 @@ const PostCard = ({
               {post.status === "published" && post.publishedAt
                 ? formatDistanceToNow(new Date(post.publishedAt), {
                     addSuffix: true,
+                    locale: zhCN,
                   })
                 : formatDistanceToNow(new Date(post.updatedAt), {
                     addSuffix: true,
+                    locale: zhCN,
                   })}
             </time>
           </div>

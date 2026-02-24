@@ -24,11 +24,11 @@ import { toast } from "sonner";
 const usernameSchema = z.object({
   username: z
     .string()
-    .min(3, "Username must be at least 3 characters")
-    .max(20, "Username must be less than 20 characters")
+    .min(3, "用户名至少 3 个字符")
+    .max(20, "用户名不超过 20 个字符")
     .regex(
       /^[a-zA-Z0-9_-]+$/,
-      "Username can only contain letters, numbers, underscores, and hyphens"
+      "用户名只能包含字母、数字、下划线和连字符"
     ),
 });
 
@@ -87,9 +87,9 @@ const SettingsPage = () => {
         username: data.username,
       });
 
-      toast.success("Username updated successfully!");
+      toast.success("用户名更新成功！");
     } catch (error) {
-      toast.error(error.message || "Failed to update username");
+      toast.error(error.message || "更新失败");
     } finally {
       setIsSubmitting(false);
     }
@@ -100,7 +100,7 @@ const SettingsPage = () => {
       <div className="flex items-center justify-center min-h-96">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-purple-400 mx-auto" />
-          <p className="text-slate-400 mt-4">Loading settings...</p>
+          <p className="text-slate-400 mt-4">加载设置中...</p>
         </div>
       </div>
     );
@@ -110,9 +110,9 @@ const SettingsPage = () => {
     <div className="space-y-8 p-4 lg:p-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold gradient-text-primary">Settings</h1>
+        <h1 className="text-3xl font-bold gradient-text-primary">设置</h1>
         <p className="text-slate-400 mt-2">
-          Manage your profile and account preferences
+          管理你的个人资料与账户偏好
         </p>
       </div>
 
@@ -121,10 +121,10 @@ const SettingsPage = () => {
         <CardHeader>
           <CardTitle className="text-white flex items-center">
             <User className="h-5 w-5 mr-2" />
-            Username Settings
+            用户名设置
           </CardTitle>
           <CardDescription>
-            Set your unique username for your public profile
+            设置你的公开个人主页用户名
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -133,12 +133,12 @@ const SettingsPage = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="username" className="text-white">
-                Username
+                用户名
               </Label>
               <Input
                 id="username"
                 {...register("username")}
-                placeholder="Enter your username"
+                placeholder="输入用户名"
                 className="bg-slate-800 border-slate-600 text-white"
               />
               {/* <Input {...register("username")} /> */}
@@ -151,14 +151,14 @@ const SettingsPage = () => {
               {/* 当前的名字 */}
               {currentUser?.username && (
                 <div className="text-sm text-slate-400">
-                  Current username:{" "}
+                  当前用户名：{" "}
                   <span className="text-white">@{currentUser.username}</span>
                 </div>
               )}
 
               {/* 设置用户名的要求 */}
               <div className="text-xs text-slate-500">
-                3-20 characters, letters, numbers, underscores, and hyphens only
+                3-20 个字符，仅限字母、数字、下划线和连字符
               </div>
 
               {errors.username && (
@@ -180,10 +180,10 @@ const SettingsPage = () => {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Updating...
+                    更新中...
                   </>
                 ) : (
-                  "Update Username"
+                  "更新用户名"
                 )}
               </Button>
             </div>

@@ -43,15 +43,15 @@ export default function FeedPage() {
   // Handle follow/unfollow
   const handleFollowToggle = async (userId) => {
     if (!currentUser) {
-      toast.error("Please sign in to follow users");
+      toast.error("请先登录才能关注");
       return;
     }
 
     try {
       await toggleFollow.mutate({ followingId: userId });
-      toast.success("Follow status updated");
+      toast.success("关注状态已更新");
     } catch (error) {
-      toast.error(error.message || "Failed to update follow status");
+      toast.error(error.message || "操作失败");
     }
   };
 
@@ -75,10 +75,10 @@ export default function FeedPage() {
         {/* Feed Header */}
         <div className="text-center mb-10">
           <h1 className="text-5xl font-bold gradient-text-primary pb-2">
-            Discover Amazing Content
+            发现精彩内容
           </h1>
           <p className="text-slate-400">
-            Stay up to date with the latest posts from creators you follow
+            紧跟你关注的创作者，不错过每篇好文
           </p>
         </div>
 
@@ -92,7 +92,7 @@ export default function FeedPage() {
                 variant={activeTab === "feed" ? "primary" : "ghost"}
                 className="flex-1"
               >
-                For You
+                推荐
               </Button>
               <Button
                 onClick={() => setActiveTab("trending")}
@@ -100,7 +100,7 @@ export default function FeedPage() {
                 className="flex-1"
               >
                 <TrendingUp className="h-4 w-4 mr-2" />
-                Trending
+                热门
               </Button>
             </div>
 
@@ -127,7 +127,7 @@ export default function FeedPage() {
                 </div>
                 <div className="flex-1">
                   <div className="bg-slate-800 border border-slate-600 rounded-full px-4 py-3 text-slate-400 hover:border-slate-500 transition-colors">
-                    What's on your mind? Share your thoughts...
+                    有什么想说的？分享你的想法...
                   </div>
                 </div>
               </Link>
@@ -138,7 +138,7 @@ export default function FeedPage() {
               <div className="flex justify-center py-12">
                 <div className="text-center">
                   <Loader2 className="h-8 w-8 animate-spin text-purple-400 mx-auto mb-4" />
-                  <p className="text-slate-400">Loading posts...</p>
+                  <p className="text-slate-400">加载中...</p>
                 </div>
               </div>
             ) : currentPosts.length === 0 ? (
@@ -149,13 +149,13 @@ export default function FeedPage() {
                     <div>
                       <h3 className="text-xl font-bold text-white mb-2">
                         {activeTab === "trending"
-                          ? "No trending posts right now"
-                          : "No posts to show"}
+                          ? "暂无热门内容"
+                          : "暂无内容"}
                       </h3>
                       <p className="text-slate-400 mb-6">
                         {activeTab === "trending"
-                          ? "Check back later for trending content"
-                          : "Follow some creators to see their posts here"}
+                          ? "稍后再来看看有没有热门内容"
+                          : "关注一些创作者，他们的文章会出现在这里"}
                       </p>
                     </div>
                   </div>
@@ -193,7 +193,7 @@ export default function FeedPage() {
               <CardHeader>
                 <CardTitle className="text-white flex items-center">
                   <Sparkles className="h-5 w-5 mr-2" />
-                  Suggested Users
+                  推荐关注
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -204,7 +204,7 @@ export default function FeedPage() {
                 ) : !suggestedUsers || suggestedUsers.length === 0 ? (
                   <div className="text-center py-4">
                     <p className="text-slate-400 text-sm">
-                      No suggestions available
+                      暂无推荐
                     </p>
                   </div>
                 ) : (
@@ -246,16 +246,15 @@ export default function FeedPage() {
                             className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white"
                           >
                             <UserPlus className="h-3 w-3 mr-1" />
-                            Follow
+                            关注
                           </Button>
                         </div>
                         <div className="text-xs text-slate-500 pl-13">
-                          {user.followerCount} followers • {user.postCount}{" "}
-                          posts
+                          {user.followerCount} 粉丝 • {user.postCount} 篇文章
                         </div>
                         {user.recentPosts && user.recentPosts.length > 0 && (
                           <div className="text-xs text-slate-400 pl-13">
-                            Latest: "
+                            最近："
                             {user.recentPosts[0].title.substring(0, 30)}..."
                           </div>
                         )}

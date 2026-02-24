@@ -244,7 +244,7 @@ export const getDailyViews = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Not authenticated");
+      throw new Error("请先登录");
     }
 
     // Get current user
@@ -254,7 +254,7 @@ export const getDailyViews = query({
       .unique();
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("用户不存在");
     }
 
     // Get user's posts
@@ -274,8 +274,8 @@ export const getDailyViews = query({
       days.push({
         date: dateString,
         views: 0,
-        day: date.toLocaleDateString("en-US", { weekday: "short" }),
-        fullDate: date.toLocaleDateString("en-US", {
+        day: date.toLocaleDateString("zh-CN", { weekday: "short" }),
+        fullDate: date.toLocaleDateString("zh-CN", {
           month: "short",
           day: "numeric",
         }),

@@ -66,7 +66,7 @@ export const updateUsername = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Not authenticated");
+      throw new Error("请先登录");
     }
 
     // Convex 官方推荐：
@@ -83,18 +83,16 @@ export const updateUsername = mutation({
     // const user = await ctx.runQuery(internal.users.getCurrentUser)
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("用户不存在");
     }
 
     const usernameRegex = /^[a-zA-Z0-9_-]+$/;
     if (!usernameRegex.test(args.username)) {
-      throw new Error(
-        "Username can only contain letters, numbers, underscores, and hyphens",
-      );
+      throw new Error("用户名只能包含字母、数字、下划线和连字符");
     }
 
     if (args.username.length < 3 || args.username.length > 20) {
-      throw new Error("Username must be between 3 and 20 characters");
+      throw new Error("用户名需在 3-20 个字符之间");
     }
 
     if (args.username !== user.username) {
@@ -104,7 +102,7 @@ export const updateUsername = mutation({
         .unique();
 
       if (existingUser) {
-        throw new Error("Username is already taken");
+        throw new Error("该用户名已被占用");
       }
     }
 

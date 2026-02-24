@@ -55,39 +55,39 @@ const transformationSchema = z.object({
 });
 
 const ASPECT_RATIOS = [
-  { label: "Original", value: "original" },
-  { label: "Square (1:1)", value: "1:1", width: 400, height: 400 },
-  { label: "Landscape (16:9)", value: "16:9", width: 800, height: 450 },
-  { label: "Portrait (4:5)", value: "4:5", width: 400, height: 500 },
-  { label: "Story (9:16)", value: "9:16", width: 450, height: 800 },
-  { label: "Custom", value: "custom" },
+  { label: "原始", value: "original" },
+  { label: "正方形 (1:1)", value: "1:1", width: 400, height: 400 },
+  { label: "横版 (16:9)", value: "16:9", width: 800, height: 450 },
+  { label: "竖版 (4:5)", value: "4:5", width: 400, height: 500 },
+  { label: "故事 (9:16)", value: "9:16", width: 450, height: 800 },
+  { label: "自定义", value: "custom" },
 ];
 
 const SMART_CROP_OPTIONS = [
-  { label: "Auto", value: "auto" },
-  { label: "Face", value: "face" },
-  { label: "Center", value: "center" },
-  { label: "Top", value: "top" },
-  { label: "Bottom", value: "bottom" },
+  { label: "自动", value: "auto" },
+  { label: "人脸", value: "face" },
+  { label: "居中", value: "center" },
+  { label: "顶部", value: "top" },
+  { label: "底部", value: "bottom" },
 ];
 
 const TEXT_POSITIONS = [
-  { label: "Center", value: "center" },
-  { label: "Top Left", value: "north_west" },
-  { label: "Top Right", value: "north_east" },
-  { label: "Bottom Left", value: "south_west" },
-  { label: "Bottom Right", value: "south_east" },
-  { label: "top", value: "north" },
-  { label: "bottom", value: "south" },
-  { label: "left", value: "west" },
-  { label: "right", value: "east" },
+  { label: "居中", value: "center" },
+  { label: "左上", value: "north_west" },
+  { label: "右上", value: "north_east" },
+  { label: "左下", value: "south_west" },
+  { label: "右下", value: "south_east" },
+  { label: "顶部", value: "north" },
+  { label: "底部", value: "south" },
+  { label: "左侧", value: "west" },
+  { label: "右侧", value: "east" },
 ];
 
 export default function ImageUploadModal({
   isOpen,
   onClose,
   onImageSelect,
-  title = "Upload & Transform Image",
+  title = "上传并处理图片",
 }) {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [transformedImage, setTransformedImage] = useState(null);
@@ -123,13 +123,13 @@ export default function ImageUploadModal({
 
     // 验证文件类型
     if (!file.type.startsWith("image/")) {
-      toast.error("Please select an image file");
+      toast.error("请选择图片文件");
       return;
     }
 
     // 验证文件大小(最大10MB)
     if (file.size > 10 * 1024 * 1024) {
-      toast.error("File size must be less than 10MB");
+      toast.error("文件大小需小于 10MB");
       return;
     }
 
@@ -143,13 +143,13 @@ export default function ImageUploadModal({
         setUploadedImage(result.data);
         setTransformedImage(result.data.url);
         setActiveTab("transform");
-        toast.success("Image uploaded successfully!");
+        toast.success("图片上传成功！");
       } else {
-        toast.error(result.error || "Upload failed");
+        toast.error(result.error || "上传失败");
       }
     } catch (error) {
-      console.error("Upload error:", error);
-      toast.error("Upload failed. Please try again.");
+      console.error("上传失败:", error);
+      toast.error("上传失败，请重试");
     } finally {
       setIsUploading(false);
     }
@@ -224,10 +224,10 @@ export default function ImageUploadModal({
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       setTransformedImage(transformedUrl);
-      toast.success("Transformations applied!");
+      toast.success("处理完成！");
     } catch (error) {
-      console.error("Transformation error:", error);
-      toast.error("Failed to apply transformations");
+      console.error("图片处理出错:", error);
+      toast.error("处理失败");
     } finally {
       setIsTransforming(false);
     }
@@ -275,15 +275,15 @@ export default function ImageUploadModal({
         <DialogHeader>
           <DialogTitle className="text-white">{title}</DialogTitle>
           <DialogDescription>
-            Upload an image and apply AI-powered transformations
+            上传图片，并用 AI 进行智能处理
           </DialogDescription>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="upload">Upload</TabsTrigger>
+            <TabsTrigger value="upload">上传</TabsTrigger>
             <TabsTrigger value="transform" disabled={!uploadedImage}>
-              Transform
+              处理
             </TabsTrigger>
           </TabsList>
 
@@ -302,7 +302,7 @@ export default function ImageUploadModal({
               {isUploading ? (
                 <div className="space-y-4">
                   <Loader2 className="h-12 w-12 mx-auto animate-spin text-purple-400" />
-                  <p className="text-slate-300">Uploading image...</p>
+                  <p className="text-slate-300">上传中...</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -310,11 +310,11 @@ export default function ImageUploadModal({
                   <div>
                     <p className="text-lg text-white">
                       {isDragActive
-                        ? "Drop the image here"
-                        : "Drag & drop an image here"}
+                        ? "松开即可上传"
+                        : "拖拽图片到此处"}
                     </p>
                     <p className="text-sm text-slate-400 mt-2">
-                      or click to select a file (JPG, PNG, WebP, GIF - Max 10MB)
+                      或点击选择文件（JPG、PNG、WebP、GIF，最大 10MB）
                     </p>
                   </div>
                 </div>
@@ -329,7 +329,7 @@ export default function ImageUploadModal({
                   className="bg-green-500/20 text-green-300 border-green-500/30"
                 >
                   <Check className="h-3 w-3 mr-1" />
-                  Image uploaded successfully!
+                  上传成功！
                 </Badge>
                 <div className="text-sm text-slate-400">
                   {uploadedImage.width} × {uploadedImage.height} •{" "}
@@ -340,7 +340,7 @@ export default function ImageUploadModal({
                   className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                 >
                   <Wand2 className="h-4 w-4 mr-2" />
-                  Start Transforming
+                  开始处理
                 </Button>
               </div>
             )}
@@ -354,14 +354,14 @@ export default function ImageUploadModal({
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-white flex items-center">
                     <Wand2 className="h-5 w-5 mr-2" />
-                    AI Transformations
+                    AI 图片处理
                   </h3>
 
                   {/* 去除背景 */}
                   <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700">
                     <div className="flex items-center justify-between mb-2">
                       <Label className="text-white font-medium">
-                        Remove Background
+                        去除背景
                       </Label>
                       <Button
                         type="button"
@@ -386,7 +386,7 @@ export default function ImageUploadModal({
                       </Button>
                     </div>
                     <p className="text-sm text-slate-400">
-                      AI-powered background removal
+                      AI 智能抠图，一键去除背景
                     </p>
                   </div>
 
@@ -394,7 +394,7 @@ export default function ImageUploadModal({
                   <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700">
                     <div className="flex items-center justify-between mb-2">
                       <Label className="text-white font-medium">
-                        Drop Shadow
+                        添加阴影
                       </Label>
                       <Button
                         type="button"
@@ -416,8 +416,8 @@ export default function ImageUploadModal({
                     </div>
                     <p className="text-sm text-slate-400">
                       {watchedValues.backgroundRemoved
-                        ? "Add realistic shadow"
-                        : "Requires background removal"}
+                        ? "添加真实感阴影"
+                        : "需先去除背景"}
                     </p>
                   </div>
                 </div>
@@ -426,11 +426,11 @@ export default function ImageUploadModal({
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-white flex items-center">
                     <Crop className="h-5 w-5 mr-2" />
-                    Resize & Crop
+                    缩放与裁剪
                   </h3>
 
                   <div className="space-y-3">
-                    <Label className="text-white">Aspect Ratio</Label>
+                    <Label className="text-white">纵横比</Label>
                     <Select
                       value={watchedValues.aspectRatio}
                       onValueChange={(value) => setValue("aspectRatio", value)}
@@ -451,7 +451,7 @@ export default function ImageUploadModal({
                   {watchedValues.aspectRatio === "custom" && (
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <Label className="text-white">Width</Label>
+                        <Label className="text-white">宽度</Label>
                         <Input
                           type="number"
                           value={watchedValues.customWidth}
@@ -466,7 +466,7 @@ export default function ImageUploadModal({
                         />
                       </div>
                       <div>
-                        <Label className="text-white">Height</Label>
+                        <Label className="text-white">高度</Label>
                         <Input
                           type="number"
                           value={watchedValues.customHeight}
@@ -485,7 +485,7 @@ export default function ImageUploadModal({
 
                   {watchedValues.aspectRatio !== "original" && (
                     <div className="space-y-3">
-                      <Label className="text-white">Smart Crop Focus</Label>
+                      <Label className="text-white">智能裁剪焦点</Label>
                       <Select
                         value={watchedValues.smartCropFocus}
                         onValueChange={(value) =>
@@ -511,15 +511,15 @@ export default function ImageUploadModal({
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-white flex items-center">
                     <Type className="h-5 w-5 mr-2" />
-                    Text Overlay
+                    文字叠加
                   </h3>
 
                   <div className="space-y-3">
-                    <Label className="text-white">Text</Label>
+                    <Label className="text-white">文字</Label>
                     <Textarea
                       value={watchedValues.textOverlay}
                       onChange={(e) => setValue("textOverlay", e.target.value)}
-                      placeholder="Enter text to overlay..."
+                      placeholder="输入要叠加的文字..."
                       rows={3}
                     />
                   </div>
@@ -528,7 +528,7 @@ export default function ImageUploadModal({
                     <>
                       <div className="space-y-3">
                         <Label className="text-white">
-                          Font Size: {watchedValues.textFontSize}px
+                          字号：{watchedValues.textFontSize}px
                         </Label>
                         <Slider
                           value={[watchedValues.textFontSize]}
@@ -544,7 +544,7 @@ export default function ImageUploadModal({
 
                       <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-2">
-                          <Label className="text-white">Text Color</Label>
+                          <Label className="text-white">文字颜色</Label>
                           <Input
                             type="color"
                             value={watchedValues.textColor}
@@ -554,7 +554,7 @@ export default function ImageUploadModal({
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-white">Position</Label>
+                          <Label className="text-white">位置</Label>
                           <Select
                             value={watchedValues.textPosition}
                             onValueChange={(value) =>
@@ -593,12 +593,12 @@ export default function ImageUploadModal({
                     ) : (
                       <Wand2 className="h-4 w-4 mr-2" />
                     )}
-                    Apply Transformations
+                    应用处理
                   </Button>
 
                   <Button onClick={resetTransformations} variant="outline">
                     <RefreshCw className="h-4 w-4 mr-2" />
-                    Reset
+                    重置
                   </Button>
                 </div>
               </div>
@@ -607,7 +607,7 @@ export default function ImageUploadModal({
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-white flex items-center">
                   <ImageIcon className="h-5 w-5 mr-2" />
-                  Preview
+                  预览
                 </h3>
 
                 {transformedImage && (
@@ -615,10 +615,10 @@ export default function ImageUploadModal({
                     <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
                       <img
                         src={transformedImage}
-                        alt="Transformed preview"
+                        alt="处理后预览"
                         className="w-full h-auto max-h-96 object-contain rounded-lg mx-auto"
                         onError={() => {
-                          toast.error("Failed to load transformed image");
+                          toast.error("加载处理后的图片失败");
                           setTransformedImage(uploadedImage?.url);
                         }}
                       />
@@ -629,7 +629,7 @@ export default function ImageUploadModal({
                         <div className="bg-slate-800 rounded-lg p-4 flex items-center space-x-3">
                           <Loader2 className="h-5 w-5 animate-spin text-purple-400" />
                           <span className="text-white">
-                            Applying transformations...
+                            正在处理中...
                           </span>
                         </div>
                       </div>
@@ -640,7 +640,7 @@ export default function ImageUploadModal({
                 {uploadedImage && transformedImage && (
                   <div className="text-center space-y-4">
                     <div className="text-sm text-slate-400">
-                      Current image URL ready for use
+                      当前图片已就绪，可直接使用
                     </div>
 
                     <div className="flex gap-3 justify-center">
@@ -649,7 +649,7 @@ export default function ImageUploadModal({
                         className="bg-green-600 hover:bg-green-700 text-white"
                       >
                         <Check className="h-4 w-4 mr-2" />
-                        Use This Image
+                        使用此图片
                       </Button>
 
                       <Button
@@ -657,7 +657,7 @@ export default function ImageUploadModal({
                         variant="outline"
                         className="border-slate-600 hover:bg-slate-700"
                       >
-                        Cancel
+                        取消
                       </Button>
                     </div>
                   </div>

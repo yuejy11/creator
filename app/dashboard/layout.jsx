@@ -22,22 +22,22 @@ import Image from "next/image";
 
 const sidebarItems = [
   {
-    title: "Dashboard",
+    title: "控制台",
     href: "/dashboard",
     icon: LayoutDashboard,
   },
   {
-    title: "Create Post",
+    title: "写文章",
     href: "/dashboard/create",
     icon: PenTool,
   },
   {
-    title: "My Posts",
+    title: "我的文章",
     href: "/dashboard/posts",
     icon: FileText,
   },
   {
-    title: "Followers",
+    title: "粉丝",
     href: "/dashboard/followers",
     icon: Users,
   },
@@ -74,7 +74,7 @@ export default function DashboardLayout({ children }) {
           <Link href={"/"} className="flex-shrink-0">
             <Image
               src="/logo.png"
-              alt="Creatr Logo"
+              alt="Creatr 平台 Logo"
               width={96}
               height={32}
               className="h-8 sm:h-10 md:h-11 w-auto object-contain"
@@ -125,12 +125,12 @@ export default function DashboardLayout({ children }) {
 
                   {/* Badge for Create Post if draft exists */}
                   {/* {item.title === "Create Post" && true && ( */}
-                  {item.title === "Create Post" && draftPost && (
+                  {item.title === "写文章" && draftPost && (
                     <Badge
                       variant="secondary"
                       className="ml-auto text-xs bg-orange-500/20 text-orange-300 border-orange-500/30"
                     >
-                      Draft
+                      草稿
                     </Badge>
                   )}
                 </div>
@@ -148,7 +148,7 @@ export default function DashboardLayout({ children }) {
               className="w-full justify-start text-slate-300 hover:text-white rounded-xl p-4"
             >
               <Settings className="h-4 w-4 mr-2" />
-              Settings
+              设置
             </Button>
           </Link>
         </div>

@@ -73,7 +73,7 @@ const PostPage = ({ params }) => {
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-slate-400">Loading post...</p>
+          <p className="text-slate-400">加载中...</p>
         </div>
       </div>
     );
@@ -85,14 +85,14 @@ const PostPage = ({ params }) => {
 
   const handleLikeToggle = async () => {
     if (!currentUser) {
-      toast.error("Please sign in to like posts");
+      toast.error("请先登录才能点赞");
       return;
     }
 
     try {
       await toggleLike.mutate({ postId });
     } catch (error) {
-      toast.error("Failed to update like");
+      toast.error("操作失败");
     }
   };
 
@@ -100,12 +100,12 @@ const PostPage = ({ params }) => {
     e.preventDefault();
 
     if (!currentUser) {
-      toast.error("Please sign in to comment");
+      toast.error("请先登录才能评论");
       return;
     }
 
     if (!commentContent.trim()) {
-      toast.error("Comment cannot be empty");
+      toast.error("评论不能为空");
       return;
     }
 
@@ -115,24 +115,24 @@ const PostPage = ({ params }) => {
         content: commentContent.trim(),
       });
       setCommentContent("");
-      toast.success("Comment added!");
+      toast.success("评论已发布！");
     } catch (error) {
-      toast.error(error.message || "Failed to add comment");
+      toast.error(error.message || "发布失败");
     }
   };
 
   const handleDeleteComment = async (commentId) => {
     try {
       await deleteComment.mutate({ commentId });
-      toast.success("Comment deleted");
+      toast.success("评论已删除");
     } catch (error) {
-      toast.error(error.message || "Failed to delete comment");
+      toast.error(error.message || "删除失败");
     }
   };
 
   return (
     <div className="min-h-screen bg-slate-900 text-white">
-      <PublicHeader link={`/${username}`} title="Back to Profile" />
+      <PublicHeader link={`/${username}`} title="返回主页" />
 
       <div className="max-w-4xl mx-auto px-6 py-8">
         <article className="space-y-8">
@@ -188,7 +188,7 @@ const PostPage = ({ params }) => {
               <div className="text-right text-sm text-slate-400">
                 <div className="flex items-center gap-1 mb-1">
                   <Calendar className="h-4 w-4" />
-                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                  {new Date(post.publishedAt).toLocaleDateString("zh-CN", {
                     month: "long",
                     day: "numeric",
                     year: "numeric",
@@ -196,7 +196,7 @@ const PostPage = ({ params }) => {
                 </div>
                 <div className="flex items-center gap-1">
                   <Eye className="h-4 w-4" />
-                  {post.viewCount.toLocaleString()} views
+                  {post.viewCount.toLocaleString()} 次阅读
                 </div>
               </div>
             </div>
@@ -239,14 +239,14 @@ const PostPage = ({ params }) => {
 
             <div className="flex items-center gap-2 text-slate-400">
               <MessageCircle className="h-5 w-5" />
-              {comments?.length || 0} comments
+              {comments?.length || 0} 条评论
             </div>
           </div>
         </article>
 
         {/* Comments Section */}
         <div className="mt-12 space-y-6">
-          <h2 className="text-2xl font-bold text-white">Comments</h2>
+          <h2 className="text-2xl font-bold text-white">评论</h2>
 
           {currentUser ? (
             <Card className="card-glass">
@@ -255,7 +255,7 @@ const PostPage = ({ params }) => {
                   <Textarea
                     value={commentContent}
                     onChange={(e) => setCommentContent(e.target.value)}
-                    placeholder="Write a comment..."
+                    placeholder="写一条评论..."
                     className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-400 resize-none"
                     rows={3}
                     maxLength={1000}
@@ -263,7 +263,7 @@ const PostPage = ({ params }) => {
 
                   <div className="flex items-center justify-between">
                     <p className="text-xs text-slate-500">
-                      {commentContent.length}/1000 characters
+                      {commentContent.length}/1000 字
                     </p>
                     <Button
                       type="submit"
@@ -275,7 +275,7 @@ const PostPage = ({ params }) => {
                       ) : (
                         <Send className="h-4 w-4 mr-2" />
                       )}
-                      Post Comment
+                      发布
                     </Button>
                   </div>
                 </form>
@@ -285,10 +285,10 @@ const PostPage = ({ params }) => {
             <Card className="card-glass">
               <CardContent className="p-6 text-center">
                 <p className="text-slate-400 mb-4">
-                  Sign in to join the conversation
+                  登录后参与讨论
                 </p>
                 <Link href="/sign-in">
-                  <Button variant="primary">Sign In</Button>
+                  <Button variant="primary">登录</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -321,11 +321,11 @@ const PostPage = ({ params }) => {
 
                         <div>
                           <p className="font-medium text-white">
-                            {comment.author?.name || "Anonymous"}
+                            {comment.author?.name || "匿名"}
                           </p>
                           <p className="text-xs text-slate-400">
                             {new Date(comment.createdAt).toLocaleDateString(
-                              "en-US",
+                              "zh-CN",
                               {
                                 month: "short",
                                 day: "numeric",
@@ -364,9 +364,9 @@ const PostPage = ({ params }) => {
             <Card className="card-glass">
               <CardContent className="text-center py-8">
                 <MessageCircle className="h-12 w-12 text-slate-600 mx-auto mb-4" />
-                <p className="text-slate-400">No comments yet</p>
+                <p className="text-slate-400">暂无评论</p>
                 <p className="text-slate-500 text-sm mt-1">
-                  Be the first to share your thoughts!
+                  来抢沙发吧！
                 </p>
               </CardContent>
             </Card>

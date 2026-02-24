@@ -45,7 +45,7 @@ export default function PostEditorHeader({
             className="text-slate-400 hover:text-white"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            返回
           </Button>
 
           {isDraft && (
@@ -53,7 +53,7 @@ export default function PostEditorHeader({
               variant="secondary"
               className="bg-orange-500/20 text-orange-300 border-orange-500/30"
             >
-              Draft
+              草稿
             </Badge>
           )}
         </div>
@@ -100,7 +100,7 @@ export default function PostEditorHeader({
               ) : (
                 <Send className="h-4 w-4 mr-2" />
               )}
-              Update
+              更新
             </Button>
           ) : (
             <DropdownMenu
@@ -114,7 +114,7 @@ export default function PostEditorHeader({
                   ) : (
                     <Send className="h-4 w-4 mr-2" />
                   )}
-                  Publish
+                  发布
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
@@ -125,7 +125,7 @@ export default function PostEditorHeader({
                   }}
                 >
                   <Send className="h-4 w-4 mr-2" />
-                  Publish now
+                  立即发布
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
@@ -134,7 +134,7 @@ export default function PostEditorHeader({
                   }}
                 >
                   <Calendar className="h-4 w-4 mr-2" />
-                  Schedule for later
+                  定时发布
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

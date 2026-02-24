@@ -65,7 +65,7 @@ const UserCard = ({
             ) : (
               <>
                 <UserPlus className="h-4 w-4 mr-1" />
-                Follow Back
+                回关
               </>
             )}
           </Button>
@@ -83,7 +83,7 @@ const UserCard = ({
           ) : (
             <>
               <UserMinus className="h-4 w-4 mr-1" />
-              Unfollow
+              取关
             </>
           )}
         </Button>
@@ -116,7 +116,7 @@ const FollowersPage = () => {
     try {
       await toggleFollow({ followingId: userId });
     } catch (error) {
-      toast.error(error.message || "Failed to update follow status");
+      toast.error(error.message || "操作失败");
     }
   };
 
@@ -141,10 +141,10 @@ const FollowersPage = () => {
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold gradient-text-primary">
-          Followers & Following
+          粉丝与关注
         </h1>
         <p className="text-slate-400 mt-2">
-          Manage your connections and discover new creators
+          管理关注关系，发现更多创作者
         </p>
       </div>
 
@@ -153,7 +153,7 @@ const FollowersPage = () => {
         <Input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search users..."
+          placeholder="搜索用户..."
           className="pl-10 bg-slate-800 border-slate-600"
         />
       </div>
@@ -162,10 +162,10 @@ const FollowersPage = () => {
       <Tabs defaultValue="followers">
         <TabsList className="grid w-full grid-cols-2 bg-slate-900">
           <TabsTrigger value="followers">
-            Followers ({filteredFollowers.length})
+            粉丝 ({filteredFollowers.length})
           </TabsTrigger>
           <TabsTrigger value="following">
-            Following ({filteredFollowing.length})
+            关注 ({filteredFollowing.length})
           </TabsTrigger>
         </TabsList>
 

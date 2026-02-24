@@ -33,7 +33,7 @@ async function callDeepSeek(prompt) {
 export async function generateBlogContent(title, category = "", tags = []) {
   try {
     if (!title || title.trim().length === 0) {
-      throw new Error("Title is required to generate content");
+      throw new Error("请先填写标题");
     }
 
     const prompt = `
@@ -62,7 +62,7 @@ export async function generateBlogContent(title, category = "", tags = []) {
     const content = await callDeepSeek(prompt);
 
     if (!content || content.trim().length < 100) {
-      throw new Error("Generated content is too short or empty");
+      throw new Error("生成内容过短或为空");
     }
 
     return {
@@ -70,12 +70,12 @@ export async function generateBlogContent(title, category = "", tags = []) {
       content: content.trim(),
     };
   } catch (error) {
-    console.error("DeepSeek Error:", error);
+    console.error("DeepSeek 错误:", error);
 
     return {
       success: false,
       error:
-        error?.message || "Failed to generate content. Please try again.",
+        error?.message || "生成失败，请重试",
     };
   }
 }
@@ -86,7 +86,7 @@ export async function improveContent(
 ) {
   try {
     if (!currentContent || currentContent.trim().length === 0) {
-      throw new Error("Content is required for improvement");
+      throw new Error("请先输入内容");
     }
 
     let prompt = "";
@@ -145,12 +145,12 @@ export async function improveContent(
       content: improvedContent.trim(),
     };
   } catch (error) {
-    console.error("Content improvement error:", error);
+    console.error("内容优化出错:", error);
 
     return {
       success: false,
       error:
-        error?.message || "Failed to improve content. Please try again.",
+        error?.message || "优化失败，请重试",
     };
   }
 }

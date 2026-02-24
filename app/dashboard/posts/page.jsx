@@ -73,21 +73,21 @@ export default function PostsPage() {
   };
 
   const handleDeletePost = async (post) => {
-    if (!window.confirm("Are you sure you want to delete this post?")) {
+    if (!window.confirm("确定要删除这篇文章吗？")) {
       return;
     }
 
     try {
       await deletePost.mutate({ id: post._id });
-      toast.success("Post deleted successfully");
+      toast.success("文章已删除");
     } catch (error) {
-      toast.error("Failed to delete post");
+      toast.error("删除失败");
     }
   };
 
   const handleDuplicatePost = (post) => {
     // TODO: Implement post duplication
-    toast.info("Duplication feature coming soon!");
+    toast.info("复制功能即将上线！");
   };
 
   if (isLoading) {
@@ -95,7 +95,7 @@ export default function PostsPage() {
       <div className="flex items-center justify-center min-h-96">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400 mx-auto"></div>
-          <p className="text-slate-400 mt-4">Loading your posts...</p>
+          <p className="text-slate-400 mt-4">加载文章中...</p>
         </div>
       </div>
     );
@@ -106,9 +106,9 @@ export default function PostsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold gradient-text-primary">My Posts</h1>
+          <h1 className="text-3xl font-bold gradient-text-primary">我的文章</h1>
           <p className="text-slate-400 mt-2">
-            Manage and track your content performance
+            管理并追踪你的内容表现
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function PostsPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
               <Input
-                placeholder="Search posts..."
+                placeholder="搜索文章..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-slate-800 border-slate-600"
@@ -142,9 +142,9 @@ export default function PostsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
+                <SelectItem value="all">全部状态</SelectItem>
+                <SelectItem value="published">已发布</SelectItem>
+                <SelectItem value="draft">草稿</SelectItem>
               </SelectContent>
             </Select>
 
@@ -154,10 +154,10 @@ export default function PostsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="oldest">Oldest First</SelectItem>
-                <SelectItem value="mostViews">Most Views</SelectItem>
-                <SelectItem value="mostLikes">Most Likes</SelectItem>
+                <SelectItem value="newest">最新优先</SelectItem>
+                <SelectItem value="oldest">最旧优先</SelectItem>
+                <SelectItem value="mostViews">阅读最多</SelectItem>
+                <SelectItem value="mostLikes">点赞最多</SelectItem>
                 <SelectItem value="alphabetical">A-Z</SelectItem>
               </SelectContent>
             </Select>
@@ -172,19 +172,19 @@ export default function PostsPage() {
             <FileText className="h-12 w-12 text-slate-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-white mb-2">
               {searchQuery || statusFilter !== "all"
-                ? "No posts found"
-                : "No posts yet"}
+                ? "没有找到文章"
+                : "还没有文章"}
             </h3>
             <p className="text-slate-400 mb-6">
               {searchQuery || statusFilter !== "all"
-                ? "Try adjusting your search or filters"
-                : "Create your first post to get started"}
+                ? "试试调整搜索或筛选条件"
+                : "创作第一篇，开启你的创作之旅"}
             </p>
             {!searchQuery && statusFilter === "all" && (
               <Link href="/dashboard/create">
                 <Button variant="primary">
                   <PlusCircle className="h-4 w-4 mr-2" />
-                  Create Your First Post
+                  创作第一篇
                 </Button>
               </Link>
             )}

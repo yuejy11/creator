@@ -49,7 +49,7 @@ export const create = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Not authenticated");
+      throw new Error("请先登录");
     }
 
     const user = await ctx.db
@@ -58,7 +58,7 @@ export const create = mutation({
       .unique();
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("用户不存在");
     }
 
     const existingDraft = await ctx.db
@@ -140,7 +140,7 @@ export const update = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Not authenticated");
+      throw new Error("请先登录");
     }
 
     const user = await ctx.db
@@ -149,19 +149,19 @@ export const update = mutation({
       .unique();
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("用户不存在");
     }
 
     // 从数据库拿到准备更新的帖子
     // 在 Convex 中，每一个文档中的 _id 内部包含了数据所在的表，数据的唯一标识符
     const post = await ctx.db.get(args.id);
     if (!post) {
-      throw new Error("Post not found");
+      throw new Error("文章不存在");
     }
 
     // 检查是不是作者自己的帖子
     if (post.authorId !== user._id) {
-      throw new Error("Not authorized to update this post");
+      throw new Error("无权编辑此文");
     }
 
     const now = Date.now();
@@ -245,7 +245,7 @@ export const deletePost = mutation({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Not authenticated");
+      throw new Error("请先登录");
     }
 
     // Get user from database
@@ -255,18 +255,18 @@ export const deletePost = mutation({
       .unique();
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("用户不存在");
     }
 
     // Get the post
     const post = await ctx.db.get(args.id);
     if (!post) {
-      throw new Error("Post not found");
+      throw new Error("文章不存在");
     }
 
     // Check if user owns the post
     if (post.authorId !== user._id) {
-      throw new Error("Not authorized to delete this post");
+      throw new Error("无权删除此文");
     }
 
     await ctx.db.delete(args.id);

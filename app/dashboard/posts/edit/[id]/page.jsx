@@ -23,7 +23,7 @@ export default function EditPostPage() {
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="flex items-center space-x-3">
           <Loader2 className="h-6 w-6 animate-spin text-purple-400" />
-          <span className="text-slate-300">Loading post...</span>
+          <span className="text-slate-300">加载中...</span>
         </div>
       </div>
     );
@@ -33,9 +33,9 @@ export default function EditPostPage() {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-2">Post Not Found</h1>
+          <h1 className="text-2xl font-bold text-white mb-2">文章不存在</h1>
           <p className="text-slate-400">
-            The post you're looking for doesn't exist.
+            你要找的文章可能已被删除或不存在。
           </p>
         </div>
       </div>

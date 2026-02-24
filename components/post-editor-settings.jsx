@@ -21,16 +21,16 @@ import {
 import { Plus, X } from "lucide-react";
 
 const CATEGORIES = [
-  "Technology",
-  "Design",
-  "Marketing",
-  "Business",
-  "Lifestyle",
-  "Education",
-  "Health",
-  "Travel",
-  "Food",
-  "Entertainment",
+  "科技",
+  "设计",
+  "营销",
+  "商业",
+  "生活",
+  "教育",
+  "健康",
+  "旅行",
+  "美食",
+  "娱乐",
 ];
 
 export default function PostEditorSettings({ isOpen, onClose, form, mode }) {
@@ -68,20 +68,20 @@ export default function PostEditorSettings({ isOpen, onClose, form, mode }) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-white">Post Settings</DialogTitle>
-          <DialogDescription>Configure your post details</DialogDescription>
+          <DialogTitle className="text-white">文章设置</DialogTitle>
+          <DialogDescription>配置文章的分类、标签与发布时间</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Category */}
           <div className="space-y-2">
-            <label className="text-white text-sm font-medium">Category</label>
+            <label className="text-white text-sm font-medium">分类</label>
             <Select
               value={watchedValues.category}
               onValueChange={(value) => setValue("category", value)}
             >
               <SelectTrigger className="bg-slate-800 border-slate-600">
-                <SelectValue placeholder="Select category..." />
+                <SelectValue placeholder="选择分类..." />
               </SelectTrigger>
               <SelectContent>
                 {CATEGORIES.map((category) => (
@@ -95,13 +95,13 @@ export default function PostEditorSettings({ isOpen, onClose, form, mode }) {
 
           {/* Tags */}
           <div className="space-y-3">
-            <label className="text-white text-sm font-medium">Tags</label>
+            <label className="text-white text-sm font-medium">标签</label>
             <div className="flex space-x-2">
               <Input
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleTagInput}
-                placeholder="Add tags..."
+                placeholder="添加标签..."
                 className="bg-slate-800 border-slate-600"
               />
               <Button
@@ -137,7 +137,7 @@ export default function PostEditorSettings({ isOpen, onClose, form, mode }) {
             )}
 
             <p className="text-xs text-slate-400">
-              {watchedValues.tags.length}/10 tags • Press Enter or comma to add
+              已添加 {watchedValues.tags.length}/10 个标签 • 按回车或逗号添加
             </p>
           </div>
 
@@ -145,7 +145,7 @@ export default function PostEditorSettings({ isOpen, onClose, form, mode }) {
           {mode === "create" && (
             <div className="space-y-2">
               <label className="text-white text-sm font-medium">
-                Schedule Publication
+                定时发布
               </label>
               <Input
                 value={watchedValues.scheduledFor}
@@ -155,7 +155,7 @@ export default function PostEditorSettings({ isOpen, onClose, form, mode }) {
                 min={new Date().toISOString().slice(0, 16)}
               />
               <p className="text-xs text-slate-400">
-                Leave empty to publish immediately
+                留空则立即发布
               </p>
             </div>
           )}

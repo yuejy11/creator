@@ -36,8 +36,8 @@ const Home = () => {
 
   // Data arrays
   const navigationItems = [
-    { label: "Features", href: "#features" },
-    { label: "About", href: "#about" },
+    { label: "功能特色", href: "#features" },
+    { label: "关于我们", href: "#about" },
   ];
 
   return (
@@ -55,7 +55,7 @@ const Home = () => {
         }}
       ></div>
 
-      {/* Hero Section */}
+      {/* 主视觉区 */}
       <section className="relative z-10 mt-48 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
@@ -71,11 +71,9 @@ const Home = () => {
               </h1>
 
               <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light leading-relaxed max-w-2xl md:max-w-none">
-                The AI-powered platform that turns your ideas into{" "}
-                <span className="text-purple-300 font-semibold">
-                  engaging content
-                </span>{" "}
-                and helps you build a thriving creator business.
+                AI 驱动的创作平台，把你的灵感变成{" "}
+                <span className="text-purple-300 font-semibold">精彩内容</span>{" "}
+                ，助你打造属于自己的创作者事业。
               </p>
             </div>
 
@@ -86,7 +84,7 @@ const Home = () => {
                   variant="primary"
                   className="rounded-full w-full sm:w-auto text-white"
                 >
-                  Start Creating for Free
+                  免费开始创作
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -96,7 +94,7 @@ const Home = () => {
                   size="xl"
                   className="rounded-full w-full sm:w-auto"
                 >
-                  Explore the Feed
+                  逛逛内容广场
                 </Button>
               </Link>
             </div>
@@ -113,7 +111,7 @@ const Home = () => {
                     <div key={i} className="relative w-6 h-6 sm:w-8 sm:h-8">
                       <Image
                         src={src}
-                        alt={`Creator ${i + 1}`}
+                        alt={`创作者头像 ${i + 1}`}
                         fill
                         className="rounded-full border-2 border-black object-cover"
                         sizes="32px"
@@ -121,7 +119,7 @@ const Home = () => {
                     </div>
                   ))}
                 </div>
-                <span>10k+ creators</span>
+                <span>1 万+ 创作者</span>
               </div>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
@@ -139,7 +137,7 @@ const Home = () => {
           <div>
             <Image
               src="/banner.png"
-              alt="Platform Banner"
+              alt="平台展示图"
               width={500}
               height={700}
               className="w-full h-auto object-contain"
@@ -149,7 +147,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Grid */}
+      {/* 功能展示区 */}
       <section
         id="features"
         className="relative mt-14 z-10 py-16 sm:py-24 px-4 sm:px-6 bg-gradient-to-r from-gray-900/50 to-purple-900/20"
@@ -157,11 +155,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 sm:mb-6">
-              <span className="gradient-text-primary">Everything you need</span>
+              <span className="gradient-text-primary">创作所需一应俱全</span>
             </h2>
             <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto px-4">
-              From AI-powered writing assistance to advanced analytics,
-              we&apos;ve built the complete toolkit for modern creators.
+              从 AI 写作辅助到数据分析，我们为当代创作者打造了完整的工具箱。
             </p>
           </div>
 
@@ -190,16 +187,15 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Platform Showcase */}
+      {/* 平台功能介绍 */}
       <section className="relative z-10 py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">
-              <span className="gradient-text-primary">How it works</span>
+              <span className="gradient-text-primary">工作原理</span>
             </h2>
             <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto">
-              Three powerful modules working together to supercharge your
-              content creation.
+              三大模块协同发力，让你的内容创作事半功倍。
             </p>
           </div>
 
@@ -258,13 +254,11 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Social Proof */}
+      {/* 数据背书 */}
       <section className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 bg-gradient-to-r from-gray-900/50 to-purple-900/20">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-12 sm:mb-16">
-            <span className="gradient-text-primary">
-              Loved by creators worldwide
-            </span>
+            <span className="gradient-text-primary">深受全球创作者喜爱</span>
           </h2>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6 lg:gap-8">
@@ -285,7 +279,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* 用户评价 */}
       <section
         id="testimonials"
         className="relative z-10 py-16 sm:py-24 px-4 sm:px-6"
@@ -293,7 +287,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">
-              <span className="gradient-text-primary">What creators say</span>
+              <span className="gradient-text-primary">创作者怎么说</span>
             </h2>
           </div>
 
@@ -344,15 +338,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* 行动召唤区 */}
       <section className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 bg-gradient-to-r from-gray-900/50 to-purple-900/20">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 sm:mb-8">
-            <span className="gradient-text-primary">Ready to create?</span>
+            <span className="gradient-text-primary">准备好开始创作了吗？</span>
           </h2>
           <p className="text-xl text-gray-400 mb-8 sm:mb-12 max-w-2xl mx-auto">
-            Join thousands of creators who are already building their audience
-            and growing their business with our AI-powered platform.
+            加入数万名正在用 AI 平台积累粉丝、拓展事业的创作者，一起成长。
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
@@ -362,7 +355,7 @@ const Home = () => {
                 variant="primary"
                 className="rounded-full text-white w-full"
               >
-                Start Your Journey
+                开启创作之旅
                 <ArrowRight className="h-5 w-5" />
               </Button>
             </Link>
@@ -372,7 +365,7 @@ const Home = () => {
                 size="xl"
                 className="rounded-full w-full"
               >
-                Explore the Feed
+                逛逛内容广场
               </Button>
             </Link>
           </div>
@@ -393,4 +386,3 @@ const Home = () => {
 };
 
 export default Home;
-

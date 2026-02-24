@@ -25,7 +25,7 @@ const Header = () => {
         <Link href={isAuthenticated ? "/feed" : "/"} className="flex-shrink-0">
           <Image
             src="/logo.png"
-            alt="Creatr Logo"
+            alt="Creatr 平台 Logo"
             width={96}
             height={32}
             className="h-8 sm:h-10 w-auto object-contain"
@@ -38,13 +38,13 @@ const Header = () => {
               href="#features"
               className="text-white font-medium transition-all duration-300 hover:text-purple-300 cursor-pointer"
             >
-              Features
+              功能特色
             </Link>
             <Link
               href="#testimonials"
               className="text-white font-medium transition-all duration-300 hover:text-purple-300 cursor-pointer"
             >
-              Testimonials
+              用户评价
             </Link>
           </div>
         )}
@@ -54,7 +54,7 @@ const Header = () => {
             <Link href="/dashboard">
               <Button variant="outline" className="hidden sm:flex" size="sm">
                 <LayoutDashboard className="h-4 w-4" />
-                <span className="hidden md:inline ml-2">Dashboard</span>
+                <span className="hidden md:inline ml-2">控制台</span>
               </Button>
             </Link>
             <UserButton />
@@ -63,12 +63,12 @@ const Header = () => {
           <Unauthenticated>
             <SignInButton>
               <Button variant="ghost" size="sm">
-                Sign In
+                登录
               </Button>
             </SignInButton> 
             <SignUpButton>
               <Button variant="primary" size="sm" className="whitespace-nowrap">
-                Sign up
+                注册
               </Button>
             </SignUpButton>
           </Unauthenticated>

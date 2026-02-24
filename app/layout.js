@@ -10,13 +10,13 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "AI Content Platform",
-  description: "Content Creation powered by AI",
+  title: "AI 创作平台",
+  description: "用 AI 赋能内容创作，让灵感落地成篇",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning>
       <body className={`${inter.className}`}>
         <ThemeProvider
           attribute="class"
@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
             }}
           >
             <ConvexClientProvider>
-              {/* Header */}
+              {/* 顶部导航栏 */}
               <Header />
               <main className="bg-slate-900 min-h-screen text-white overflow-x-hidden">
                 {children}

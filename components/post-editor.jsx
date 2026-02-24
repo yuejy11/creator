@@ -14,10 +14,10 @@ import PostEditorSettings from "./post-editor-settings";
 import ImageUploadModal from "./image-upload-modal";
 
 const postSchema = z.object({
-  title: z.string().min(1, "Title is required").max(200, "Title too long"),
-  content: z.string().min(1, "Content is required"),
+  title: z.string().min(1, "标题不能为空").max(200, "标题过长"),
+  content: z.string().min(1, "正文不能为空"),
   category: z.string().optional(),
-  tags: z.array(z.string()).max(10, "Maximum 10 tags allowed"),
+  tags: z.array(z.string()).max(10, "最多添加 10 个标签"),
   featuredImage: z.string().optional(),
   scheduledFor: z.string().optional(),
 });
@@ -91,7 +91,7 @@ export default function PostEditor({
     // 用于文章封面
     if (imageModalType === "featured") {
       setValue("featuredImage", imageData.url);
-      toast.success("Featured image added!");
+      toast.success("封面图已添加！");
     } 
     // 用于正文内容
     else if (imageModalType === "content" && quillRef) {
@@ -107,7 +107,7 @@ export default function PostEditor({
       // 移动光标
       // 插入图片后，把光标移动到图片后面
       quill.setSelection(index + 1);
-      toast.success("Image inserted!");
+      toast.success("图片已插入！");
     }
     setIsImageModalOpen(false);
   };
@@ -150,14 +150,14 @@ export default function PostEditor({
 
       if (!silent) {
         const message =
-          action === "publish" ? "Post published!" : "Draft saved!";
+          action === "publish" ? "文章已发布！" : "草稿已保存！";
         toast.success(message);
         if (action === "publish") router.push("/dashboard/posts");
       }
 
       return resultId;
     } catch (error) {
-      if (!silent) toast.error(error.message || "Failed to save post");
+      if (!silent) toast.error(error.message || "保存失败，请重试");
       throw error;
     }
   };
@@ -187,7 +187,7 @@ export default function PostEditor({
 
   const handleSchedule = () => {
     if (!watchedValues.scheduledFor) {
-      toast.error("Please select a date and time to schedule");
+      toast.error("请选择发布时间");
       return;
     }
     handleSubmit((data) => onSubmit(data, "schedule"))();
@@ -228,8 +228,8 @@ export default function PostEditor({
         onImageSelect={handleImageSelect}
         title={
           imageModalType === "featured"
-            ? "Upload Featured Image"
-            : "Insert Image"
+            ? "上传封面图"
+            : "插入图片"
         }
       />
     </div>

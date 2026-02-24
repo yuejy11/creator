@@ -25,6 +25,7 @@ import Link from "next/link";
 import { api } from "@/convex/_generated/api";
 import { useConvexQuery } from "@/hooks/use-convex-query";
 import { formatDistanceToNow } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import DailyViewsChart from "@/components/daily-views-chart";
 
 export default function DashboardPage() {
@@ -46,7 +47,7 @@ export default function DashboardPage() {
 
   // Format time relative to now
   const formatTime = (timestamp) => {
-    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true, locale: zhCN });
   };
 
   // Loading states
@@ -55,7 +56,7 @@ export default function DashboardPage() {
       <div className="flex items-center justify-center min-h-96">
         <div className="text-center">
           <Loader2 className="h-8 w-8 animate-spin text-purple-400 mx-auto" />
-          <p className="text-slate-400 mt-4">Loading dashboard...</p>
+          <p className="text-slate-400 mt-4">加载中...</p>
         </div>
       </div>
     );
@@ -79,17 +80,17 @@ export default function DashboardPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold gradient-text-primary">
-            Dashboard
+            控制台
           </h1>
           <p className="text-slate-400 mt-2">
-            Welcome back! Here's what's happening with your content.
+            欢迎回来！一起来看看你的内容表现如何。
           </p>
         </div>
 
         <Link href="/dashboard/create">
           <Button variant={"primary"}>
             <PlusCircle className="h-4 w-4 mr-2" />
-            Create New Post
+            新建文章
           </Button>
         </Link>
       </div>
@@ -99,7 +100,7 @@ export default function DashboardPage() {
         <Card className="card-glass">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium text-slate-300">
-              Total Views
+              总阅读量
             </CardTitle>
             <Eye className="h-4 w-4 text-blue-400" />
           </CardHeader>
@@ -110,7 +111,7 @@ export default function DashboardPage() {
             {stats.viewsGrowth > 0 && (
               <div className="flex items-center text-xs text-green-400 mt-1">
                 <TrendingUp className="h-3 w-3 mr-1" />+{stats.viewsGrowth}%
-                from last month
+                较上月
               </div>
             )}
           </CardContent>
@@ -119,7 +120,7 @@ export default function DashboardPage() {
         <Card className="card-glass">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium text-slate-300">
-              Total Likes
+              总点赞数
             </CardTitle>
             <Heart className="h-4 w-4 text-red-400" />
           </CardHeader>
@@ -130,7 +131,7 @@ export default function DashboardPage() {
             {stats.likesGrowth > 0 && (
               <div className="flex items-center text-xs text-green-400 mt-1">
                 <TrendingUp className="h-3 w-3 mr-1" />+{stats.likesGrowth}%
-                from last month
+                较上月
               </div>
             )}
           </CardContent>
@@ -139,7 +140,7 @@ export default function DashboardPage() {
         <Card className="card-glass">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium text-slate-300">
-              Comments
+              评论数
             </CardTitle>
             <MessageCircle className="h-4 w-4 text-yellow-400" />
           </CardHeader>
@@ -150,7 +151,7 @@ export default function DashboardPage() {
             {stats.commentsGrowth > 0 && (
               <div className="flex items-center text-xs text-green-400 mt-1">
                 <TrendingUp className="h-3 w-3 mr-1" />+{stats.commentsGrowth}%
-                from last month
+                较上月
               </div>
             )}
           </CardContent>
@@ -159,7 +160,7 @@ export default function DashboardPage() {
         <Card className="card-glass">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-sm font-medium text-slate-300">
-              Followers
+              粉丝数
             </CardTitle>
             <Users className="h-4 w-4 text-green-400" />
           </CardHeader>
@@ -170,7 +171,7 @@ export default function DashboardPage() {
             {stats.followersGrowth > 0 && (
               <div className="flex items-center text-xs text-green-400 mt-1">
                 <TrendingUp className="h-3 w-3 mr-1" />+{stats.followersGrowth}%
-                from last month
+                较上月
               </div>
             )}
           </CardContent>
@@ -184,14 +185,14 @@ export default function DashboardPage() {
           <Card className="card-glass">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-white">Recent Posts</CardTitle>
+                <CardTitle className="text-white">最近文章</CardTitle>
                 <Link href="/dashboard/posts">
                   <Button
                     variant="ghost"
                     size="sm"
                     className="text-slate-400 hover:text-white"
                   >
-                    View All
+                    查看全部
                   </Button>
                 </Link>
               </div>
@@ -203,11 +204,11 @@ export default function DashboardPage() {
                 </div>
               ) : !recentPosts || recentPosts.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-slate-400 mb-4">No posts yet</p>
+                  <p className="text-slate-400 mb-4">还没有文章</p>
                   <Link href="/dashboard/create">
                     <Button variant="outline" size="sm">
                       <PlusCircle className="h-4 w-4 mr-2" />
-                      Create Your First Post
+                      创作你的第一篇
                     </Button>
                   </Link>
                 </div>
@@ -226,7 +227,7 @@ export default function DashboardPage() {
                     >
                       <div className="flex-1">
                         <h3 className="font-medium text-white truncate">
-                          {post.title || "Untitled Post"}
+                          {post.title || "未命名文章"}
                         </h3>
                         <div className="flex items-center gap-4 mt-2">
                           <Badge
@@ -245,16 +246,16 @@ export default function DashboardPage() {
                                   : "bg-orange-500/20 text-orange-300 border-orange-500/30"
                             }
                           >
-                            {post.status}
+                            {post.status === "published" ? "已发布" : post.status === "scheduled" ? "定时" : "草稿"}
                           </Badge>
                           <span className="text-sm text-slate-400">
                             {post.status === "published" && post.publishedAt
-                              ? `Published ${formatTime(post.publishedAt)}`
+                              ? `发布于 ${formatTime(post.publishedAt)}`
                               : post.status === "draft"
-                                ? `Updated ${formatTime(post.updatedAt)}`
+                                ? `更新于 ${formatTime(post.updatedAt)}`
                                 : post.scheduledFor
-                                  ? `Scheduled for ${new Date(post.scheduledFor).toLocaleDateString()}`
-                                  : `Updated ${formatTime(post.updatedAt)}`}
+                                  ? `计划于 ${new Date(post.scheduledFor).toLocaleDateString("zh-CN")}`
+                                  : `更新于 ${formatTime(post.updatedAt)}`}
                           </span>
                         </div>
                       </div>
@@ -285,9 +286,9 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle className="text-white flex items-center">
                 <BarChart3 className="h-5 w-5 mr-2" />
-                Analytics Overview
+                数据概览
               </CardTitle>
-              <CardDescription>Views over the last 30 days</CardDescription>
+              <CardDescription>近 30 天阅读量</CardDescription>
             </CardHeader>
             <CardContent>
               <DailyViewsChart data={dailyViewsData} isLoading={chartLoading} />
@@ -299,9 +300,9 @@ export default function DashboardPage() {
         <div className="space-y-6">
           <Card className="card-glass">
             <CardHeader>
-              <CardTitle className="text-white">Recent Activity</CardTitle>
+              <CardTitle className="text-white">最近动态</CardTitle>
               <CardDescription>
-                Latest interactions with your content
+                读者与你内容的最近互动
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -311,7 +312,7 @@ export default function DashboardPage() {
                 </div>
               ) : !recentActivity || recentActivity.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-slate-400">No recent activity</p>
+                  <p className="text-slate-400">暂无最近动态</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -341,11 +342,11 @@ export default function DashboardPage() {
                         <p className="text-sm text-white">
                           <span className="font-medium">{activity.user}</span>
                           {activity.type === "like" &&
-                            ` liked your post "${activity.post}"`}
+                            ` 赞了你的文章「${activity.post}」`}
                           {activity.type === "comment" &&
-                            ` commented on "${activity.post}"`}
+                            ` 评论了「${activity.post}」`}
                           {activity.type === "follow" &&
-                            " started following you"}
+                            " 关注了你"}
                         </p>
                         <p className="text-xs text-slate-400 mt-1">
                           {formatTime(activity.time)}
@@ -361,7 +362,7 @@ export default function DashboardPage() {
           {/* Quick Actions */}
           <Card className="card-glass">
             <CardHeader>
-              <CardTitle className="text-white">Quick Actions</CardTitle>
+              <CardTitle className="text-white">快捷操作</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Link href="/dashboard/create">
@@ -370,7 +371,7 @@ export default function DashboardPage() {
                   className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-700/50"
                 >
                   <PlusCircle className="h-4 w-4 mr-2" />
-                  Create New Post
+                  新建文章
                 </Button>
               </Link>
 
@@ -380,7 +381,7 @@ export default function DashboardPage() {
                   className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-700/50"
                 >
                   <Calendar className="h-4 w-4 mr-2" />
-                  Manage Posts
+                  管理文章
                 </Button>
               </Link>
 
@@ -390,7 +391,7 @@ export default function DashboardPage() {
                   className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-700/50"
                 >
                   <Users className="h-4 w-4 mr-2" />
-                  View Followers
+                  查看粉丝
                 </Button>
               </Link>
             </CardContent>

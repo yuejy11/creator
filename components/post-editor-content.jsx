@@ -90,11 +90,11 @@ export default function PostEditorContent({
     // generate
     if (type === "generate") {
       if (!title?.trim())
-        return toast.error("Please add a title before generating content");
+        return toast.error("请先填写标题再生成内容");
       if (
         content &&
         content !== "<p></p>" &&
-        !window.confirm("This will replace your existing content. Continue?")
+        !window.confirm("将替换当前内容，确定继续？")
       )
         return;
       setIsGenerating(true);
@@ -102,7 +102,7 @@ export default function PostEditorContent({
     // improve 
     else {
       if (!content || content === "<p></p>")
-        return toast.error("Please add some content before improving it");
+        return toast.error("请先输入一些内容再优化");
       setIsImproving(true);
     }
 
@@ -115,13 +115,13 @@ export default function PostEditorContent({
       if (result.success) {
         setValue("content", result.content);
         toast.success(
-          `Content ${type === "generate" ? "generated" : improvementType + "d"} successfully!`
+          type === "generate" ? "内容生成成功！" : "内容优化完成！"
         );
       } else {
         toast.error(result.error);
       }
     } catch (error) {
-      toast.error(`Failed to ${type} content. Please try again.`);
+      toast.error("操作失败，请稍后重试");
     } finally {
       type === "generate" ? setIsGenerating(false) : setIsImproving(false);
     }
@@ -150,7 +150,7 @@ export default function PostEditorContent({
             <div className="relative group">
               <img
                 src={watchedValues.featuredImage}
-                alt="Featured"
+                alt="文章封面"
                 className="w-full h-80 object-cover rounded-xl"
               />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center space-x-3">
@@ -159,14 +159,14 @@ export default function PostEditorContent({
                   variant="secondary"
                   size="sm"
                 >
-                  Change Image
+                  更换图片
                 </Button>
                 <Button
                   onClick={() => setValue("featuredImage", "")}
                   variant="destructive"
                   size="sm"
                 >
-                  Remove
+                  移除
                 </Button>
               </div>
             </div>
@@ -178,10 +178,10 @@ export default function PostEditorContent({
               <ImageIcon className="h-12 w-12 text-slate-400 group-hover:text-slate-300" />
               <div className="text-center">
                 <p className="text-slate-300 text-lg font-medium">
-                  Add a featured image
+                  添加封面图
                 </p>
                 <p className="text-slate-500 text-sm mt-1">
-                  Upload and transform with AI
+                  上传后用 AI 智能处理
                 </p>
               </div>
             </button>
@@ -191,7 +191,7 @@ export default function PostEditorContent({
           <div>
             <Input
               {...register("title")}
-              placeholder="Post title..."
+              placeholder="文章标题..."
               className="border-0 text-4xl font-bold bg-transparent placeholder:text-slate-500 text-white p-0 h-auto focus-visible:ring-0 focus-visible:ring-offset-0"
               style={{ fontSize: "2.5rem", lineHeight: "1.2" }}
             />
@@ -217,7 +217,7 @@ export default function PostEditorContent({
                 className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white disabled:opacity-50 w-full"
               >
                 <Wand2 className="h-4 w-4 mr-2" />
-                Generate Content with AI
+                用 AI 生成内容
               </Button>
             ) : (
               <div className="grid grid-cols-3 w-full gap-2">
@@ -235,14 +235,14 @@ export default function PostEditorContent({
                     className={`border-${color}-500 text-${color}-400 hover:bg-${color}-500 hover:text-white disabled:opacity-50`}
                   >
                     <Icon className="h-4 w-4 mr-2" />
-                    AI {type.charAt(0).toUpperCase() + type.slice(1)}
+                    AI {type === "enhance" ? "润色" : type === "expand" ? "扩写" : "精简"}
                   </Button>
                 ))}
               </div>
             )}
             {!hasTitle && (
               <p className="text-xs text-slate-400 w-full pt-2">
-                Add a title to enable AI content generation
+                先填写标题才能使用 AI 生成
               </p>
             )}
           </div>
@@ -263,7 +263,7 @@ export default function PostEditorContent({
               modules={getQuillModules()}
               // 允许输出格式
               formats={quillConfig.formats}
-              placeholder="Tell your story... or use AI to generate content!"
+              placeholder="开始讲述你的故事吧... 或交给 AI 来生成！"
               style={{
                 minHeight: "400px",
                 fontSize: "1.125rem",

@@ -31,7 +31,7 @@ const DailyViewsChart = ({ data, isLoading }) => {
   if (!data || data.length === 0) {
     return (
       <div className="h-64 flex items-center justify-center">
-        <p className="text-slate-400">No view data available</p>
+        <p className="text-slate-400">暂无阅读数据</p>
       </div>
     );
   }
