@@ -26,7 +26,7 @@ export default function FeedPage() {
   // Data queries
   const { data: feedData, isLoading: feedLoading } = useConvexQuery(
     api.feed.getFeed,
-    { limit: 15 }
+    { limit: 15 },
   );
 
   const { data: suggestedUsers, isLoading: suggestionsLoading } =
@@ -34,7 +34,7 @@ export default function FeedPage() {
 
   const { data: trendingPosts, isLoading: trendingLoading } = useConvexQuery(
     api.feed.getTrendingPosts,
-    { limit: 15 }
+    { limit: 15 },
   );
 
   // Mutations
@@ -77,9 +77,7 @@ export default function FeedPage() {
           <h1 className="text-5xl font-bold gradient-text-primary pb-2">
             发现精彩内容
           </h1>
-          <p className="text-slate-400">
-            紧跟你关注的创作者，不错过每篇好文
-          </p>
+          <p className="text-slate-400">紧跟你关注的创作者，不错过每篇好文</p>
         </div>
 
         {/* Main Feed */}
@@ -148,9 +146,7 @@ export default function FeedPage() {
                     <div className="text-6xl">📝</div>
                     <div>
                       <h3 className="text-xl font-bold text-white mb-2">
-                        {activeTab === "trending"
-                          ? "暂无热门内容"
-                          : "暂无内容"}
+                        {activeTab === "trending" ? "暂无热门内容" : "暂无内容"}
                       </h3>
                       <p className="text-slate-400 mb-6">
                         {activeTab === "trending"
@@ -186,7 +182,7 @@ export default function FeedPage() {
             )}
           </div>
 
-          {/* Left Sidebar - Following */}
+          {/* 左侧侧边栏-推荐关注 */}
           <div className="lg:col-span-2 space-y-6 mt-14">
             {/* Suggested Users */}
             <Card className="card-glass">
@@ -203,9 +199,7 @@ export default function FeedPage() {
                   </div>
                 ) : !suggestedUsers || suggestedUsers.length === 0 ? (
                   <div className="text-center py-4">
-                    <p className="text-slate-400 text-sm">
-                      暂无推荐
-                    </p>
+                    <p className="text-slate-400 text-sm">暂无推荐</p>
                   </div>
                 ) : (
                   <div className="space-y-4">

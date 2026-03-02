@@ -10,20 +10,20 @@ export default defineSchema({
   users: defineTable({
     name: v.string(),
     email: v.string(),
-    tokenIdentifier: v.string(), 
-    ImageUrl: v.optional(v.string()), 
-    username: v.optional(v.string()), 
+    tokenIdentifier: v.string(),
+    ImageUrl: v.optional(v.string()),
+    username: v.optional(v.string()),
     createAt: v.number(),
-    lastActiveAt: v.number()
+    lastActiveAt: v.number(),
   })
     // 精确查找索引
     // 给 tokenIdentifier 建立一个查找目录，目录名字叫 by_token
     .index("by_token", ["tokenIdentifier"])
-    .index("by_email", ["email"]) 
-    .index("by_username", ["username"]) 
+    .index("by_email", ["email"])
+    .index("by_username", ["username"])
     // 全文搜索索引
     // 给 name 字段建立搜索引擎级索引(支持模糊匹配)，目录名字叫 search_name
-    .searchIndex("search_name", { searchField: "name" }) 
+    .searchIndex("search_name", { searchField: "name" })
     .searchIndex("search_email", { searchField: "email" }),
 
   // 帖子表
@@ -34,8 +34,8 @@ export default defineSchema({
     status: v.union(
       // 限定某个字段的值必须完全等于你指定的那个字符串，不能有任何偏差
       // DRAFT 这种也会报错
-      v.literal("draft"), 
-      v.literal("published")
+      v.literal("draft"),
+      v.literal("published"),
     ),
     // 作者关系
     authorId: v.id("users"), // 外键：指向 users 表的 id
@@ -51,6 +51,7 @@ export default defineSchema({
     // 相关分析数据
     viewCount: v.number(),
     likeCount: v.number(),
+    commentCount: v.optional(v.number()),
   })
     .index("by_author", ["authorId"])
     .index("by_status", ["status"])
@@ -77,7 +78,7 @@ export default defineSchema({
       v.literal("rejected"),
     ),
 
-    createdAt: v.number()
+    createdAt: v.number(),
   })
     .index("by_post", ["postId"])
     .index("by_post_status", ["postId", "status"])

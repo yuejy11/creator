@@ -36,6 +36,7 @@ const PostCard = ({
   onDuplicate,
   className = "",
 }) => {
+  // console.log("post在这儿：", post);
   // Get status badge configuration
   const getStatusBadge = (post) => {
     if (post.status === "published") {
@@ -235,7 +236,8 @@ const PostCard = ({
                 {post.likeCount?.toLocaleString() || 0}
               </div>
               <div className="flex items-center gap-1">
-                <MessageCircle className="h-4 w-4" />0
+                <MessageCircle className="h-4 w-4" />
+                {post.commentCount?.toLocaleString() || 0}
               </div>
             </div>
             <time>

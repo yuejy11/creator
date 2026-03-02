@@ -32,7 +32,7 @@ export const getFeed = query({
               }
             : null,
         };
-      })
+      }),
     );
 
     return {
@@ -56,7 +56,7 @@ export const getSuggestedUsers = query({
       currentUser = await ctx.db
         .query("users")
         .filter((q) =>
-          q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier)
+          q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier),
         )
         .unique();
 
@@ -88,8 +88,8 @@ export const getSuggestedUsers = query({
             .filter((q) =>
               q.and(
                 q.eq(q.field("authorId"), user._id),
-                q.eq(q.field("status"), "published")
-              )
+                q.eq(q.field("status"), "published"),
+              ),
             )
             .order("desc")
             .take(5);
@@ -103,11 +103,11 @@ export const getSuggestedUsers = query({
           // Calculate engagement score for ranking
           const totalViews = posts.reduce(
             (sum, post) => sum + post.viewCount,
-            0
+            0,
           );
           const totalLikes = posts.reduce(
             (sum, post) => sum + post.likeCount,
-            0
+            0,
           );
           const engagementScore =
             totalViews + totalLikes * 5 + followers.length * 10;
@@ -128,7 +128,7 @@ export const getSuggestedUsers = query({
               likeCount: post.likeCount,
             })),
           };
-        })
+        }),
     );
 
     // Sort by engagement score and recent activity
@@ -164,8 +164,8 @@ export const getTrendingPosts = query({
       .filter((q) =>
         q.and(
           q.eq(q.field("status"), "published"),
-          q.gte(q.field("publishedAt"), weekAgo)
-        )
+          q.gte(q.field("publishedAt"), weekAgo),
+        ),
       )
       .collect();
 
@@ -193,7 +193,7 @@ export const getTrendingPosts = query({
               }
             : null,
         };
-      })
+      }),
     );
 
     return postsWithAuthors.filter((post) => post.author !== null);

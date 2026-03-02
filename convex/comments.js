@@ -43,6 +43,11 @@ export const addComment = mutation({
       createdAt: Date.now(),
     });
 
+    // 帖子表中评论数量+1
+    await ctx.db.patch(args.postId, {
+      commentCount: (post?.commentCount ?? 0) + 1,
+    });
+
     return commentId;
   },
 });
@@ -56,8 +61,8 @@ export const getPostComments = query({
       .filter((q) =>
         q.and(
           q.eq(q.field("postId"), args.postId),
-          q.eq(q.field("status"), "approved")
-        )
+          q.eq(q.field("status"), "approved"),
+        ),
       )
       .order("asc")
       .collect();
@@ -77,7 +82,7 @@ export const getPostComments = query({
               }
             : null,
         };
-      })
+      }),
     );
 
     return commentsWithUsers.filter((comment) => comment.author !== null);

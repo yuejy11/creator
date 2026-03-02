@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { shadesOfPurple } from "@clerk/themes";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
+import { zhCN } from "@clerk/localizations";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,12 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <ClerkProvider
+            localization={{
+              ...zhCN,
+              formFieldInputPlaceholder__firstName: "请输入名字",
+              formFieldInputPlaceholder__lastName: "请输入姓氏",
+              formFieldInputPlaceholder__password: "请输入密码",
+            }}
             appearance={{
               theme: shadesOfPurple,
             }}
